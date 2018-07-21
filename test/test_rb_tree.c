@@ -18,6 +18,8 @@ void test_insert_null_value(void)
 {
         RedBlack_T test_tree = new_rb_tree(); 
         TEST_ASSERT_EQUAL(-1, insert_value(test_tree, NULL)); 
+
+        free(test_tree);
 }
 
 void test_insert_null_tree(void)
@@ -30,7 +32,16 @@ void test_insert_null_tree_and_null_value(void)
         TEST_ASSERT_EQUAL(-1, insert_value(NULL, NULL));
 }
 
+void test_is_empty_null_tree(void)
+{
+        RedBlack_T test_tree = new_rb_tree();
+        TEST_ASSERT_TRUE(rb_tree_is_empty(test_tree));
+}
 
+void test_is_empty_one_item_tree(void)
+{
+        
+}
 
 int main(void)
 {
@@ -40,6 +51,7 @@ int main(void)
         RUN_TEST(test_insert_null_value);
         RUN_TEST(test_insert_null_tree); 
         RUN_TEST(test_insert_null_tree_and_null_value);
+        RUN_TEST(test_is_empty_null_tree); 
 
         UnityEnd();
         return 0;

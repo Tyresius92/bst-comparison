@@ -16,11 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-
-/*** MACRO DEFINITIONS ***/
-
-#define BLACK 'b'
-#define RED 'r'
+#include <stdbool.h>
 
 /*** DEFINITIONS AND TYPEDEFS ***/
 
@@ -59,5 +55,31 @@ RedBlack_T new_rb_tree();
  */
 int insert_value(RedBlack_T tree, void * value);
 
+/*
+ * free_rb_tree
+ * 
+ * given a pointer to a red black tree, deallocates the tree and all nodes
+ * contained within it, then sets the value of the pointer to NULL
+ *
+ * CREs         tree == NULL
+ * UREs         n/a
+ * 
+ * @param       RedBlack_T - the tree to be freed
+ * @return      n/a
+ */
+void free_rb_tree(RedBlack_T tree); 
+
+/*
+ * rb_tree_is_empty
+ * 
+ * returns true if the tree is empty, and false otherwise
+ * 
+ * CREs         tree == NULL
+ * UREs         n/a
+ * 
+ * @param       Redblack_T - tree to be checked if empty
+ * @return      bool - true if empty, false otherwise
+ */ 
+bool rb_tree_is_empty(RedBlack_T tree); 
 
 #endif
