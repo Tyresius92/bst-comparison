@@ -28,9 +28,9 @@ typedef RedBlack_T T;
 Node *construct_node(char * value);
 void deallocate_all_tree_nodes(Node *n); 
 Node *private_insert(Node *root, Node *new_node);
-void fix_violation(Node *root, Node *inserted);
-void rotate_left(Node *root, Node *n); 
-void rotate_right(Node *root, Node *n); 
+void fix_violation(RedBlack_T tree, Node *inserted);
+void rotate_left(RedBlack_T tree, Node *n); 
+void rotate_right(RedBlack_T tree, Node *n); 
 
 /************************
  * FUNCTION DEFINITIONS *
@@ -53,7 +53,7 @@ int insert_value(T tree, char *value)
 
         tree->root = private_insert(tree->root, new_node); 
 
-        fix_violation(tree->root, new_node);  
+        fix_violation(tree, new_node);  
 
         return 0;
 }
@@ -75,12 +75,12 @@ Node *private_insert(Node *root, Node *new_node)
         return root; 
 }
 
-void fix_violation(Node *root, Node *culprit)
+void fix_violation(RedBlack_T tree, Node *culprit)
 {
         Node *parent_node = NULL; 
         Node *grand_parent_node = NULL; 
 
-        while ((culprit != root) && (culprit->color != BLACK) && (culprit->parent->color == RED)) {
+        while ((culprit != tree->root) && (culprit->color != BLACK) && (culprit->parent->color == RED)) {
                 
                 parent_node = culprit->parent; 
                 grand_parent_node = culprit->parent->parent; 
@@ -99,12 +99,12 @@ void fix_violation(Node *root, Node *culprit)
                         } else {
 
                                 if (culprit == parent_node->right) {
-                                        rotate_left(root, parent_node); 
+                                        rotate_left(tree, parent_node); 
                                         culprit = parent_node; 
                                         parent_node = culprit->parent; 
                                 }
 
-                                rotate_right(root, grand_parent_node); 
+                                rotate_right(tree, grand_parent_node); 
 
                                 char temp = parent_node->color; 
                                 parent_node->color = grand_parent_node->color; 
@@ -112,9 +112,6 @@ void fix_violation(Node *root, Node *culprit)
 
                                 culprit = parent_node; 
 
-                                if (root == grand_parent_node) {
-                                        root = culprit; 
-                                }
                         }
                 } else { // parent_node == grand_parent_node->right
                         Node *uncle = grand_parent_node->left; 
@@ -126,12 +123,12 @@ void fix_violation(Node *root, Node *culprit)
                                 culprit = grand_parent_node; 
                         } else {
                                 if (culprit == parent_node->left) {
-                                        rotate_right(root, parent_node); 
+                                        rotate_right(tree, parent_node); 
                                         culprit = parent_node; 
                                         parent_node = culprit->parent; 
                                 }
 
-                                rotate_left(root, grand_parent_node);
+                                rotate_left(tree, grand_parent_node);
 
                                 char temp = parent_node->color; 
                                 parent_node->color = grand_parent_node->color; 
@@ -139,17 +136,14 @@ void fix_violation(Node *root, Node *culprit)
 
                                 culprit = parent_node; 
 
-                                if (root == grand_parent_node) {
-                                        root = culprit; 
-                                }
                         }
                 }
         }
 
-        root->color = BLACK; 
+        tree->root->color = BLACK; 
 }
 
-void rotate_left(Node *root, Node *n)
+void rotate_left(RedBlack_T tree, Node *n)
 {
         Node *right_child = n->right; 
 
@@ -161,12 +155,12 @@ void rotate_left(Node *root, Node *n)
         right_child->parent = n->parent; 
 
         if(n->parent == NULL) {
-                root = right_child; 
+                tree->root = right_child; 
         } else if (n == n->parent->left) {
-                (void) root; 
+                (void) tree; 
                 n->parent->left = right_child; 
         } else {
-                (void) root; 
+                (void) tree; 
                 n->parent->right = right_child; 
         }
 
@@ -174,7 +168,7 @@ void rotate_left(Node *root, Node *n)
         n->parent = right_child; 
 }
 
-void rotate_right(Node *root, Node *n)
+void rotate_right(RedBlack_T tree, Node *n)
 {
         Node *left_child = n->left; 
 
@@ -186,12 +180,12 @@ void rotate_right(Node *root, Node *n)
         left_child->parent = n->parent; 
 
         if(n->parent == NULL) {
-                root = left_child; 
+                tree->root = left_child; 
         } else if (n == n->parent->left) {
-                (void) root; 
+                (void) tree; 
                 n->parent->left = left_child; 
         } else {
-                (void) root; 
+                (void) tree; 
                 n->parent->right = left_child; 
         }
 
@@ -263,9 +257,30 @@ bool rb_tree_is_empty(RedBlack_T tree)
                 return false; 
 }
 
+
+
+
+
+void in_order_print(Node *root, int recurse_level)
+{
+        if (root != NULL) {
+                in_order_print(root->left, recurse_level + 1);
+                fprintf(stderr, "%s\t%c\t%d\n", root->value, root->color, recurse_level); 
+                in_order_print(root->right, recurse_level + 1); 
+        }
+}
+
+
+
+
+
+
 void rb_map(RedBlack_T tree, void *func_to_apply, void *cl)
 {
-        (void) tree; 
         (void) func_to_apply; 
         (void) cl; 
+
+        in_order_print(tree->root, 0); 
+
 }
+

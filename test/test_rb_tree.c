@@ -53,6 +53,8 @@ void test_insert_several_values(void)
         TEST_ASSERT_EQUAL(0, insert_value(test_tree, "says"));
         TEST_ASSERT_EQUAL(0, insert_value(test_tree, "hello"));
 
+        rb_map(test_tree, NULL, NULL); 
+
         free_rb_tree(test_tree); 
 }
 
@@ -71,6 +73,27 @@ void test_insert_many_times_and_force_rebalancing(void)
         TEST_ASSERT_EQUAL(0, insert_value(test_tree, "j")); 
         TEST_ASSERT_EQUAL(0, insert_value(test_tree, "k")); 
         TEST_ASSERT_EQUAL(0, insert_value(test_tree, "l")); 
+
+        free_rb_tree(test_tree); 
+}
+
+void test_insert_reversed_order_and_force_rebalancing(void)
+{
+        RedBlack_T test_tree = new_rb_tree(); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "l")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "k")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "j")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "i")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "h")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "g")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "f")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "e")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "d")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "c")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "b")); 
+        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "a")); 
+
+        rb_map(test_tree, NULL, NULL); 
 
         free_rb_tree(test_tree); 
 }
@@ -100,6 +123,7 @@ int main(void)
         RUN_TEST(test_is_empty_one_item_tree); 
         RUN_TEST(test_insert_several_values); 
         RUN_TEST(test_insert_many_times_and_force_rebalancing); 
+        RUN_TEST(test_insert_reversed_order_and_force_rebalancing); 
         RUN_TEST(test_is_in_tree); 
 
         UnityEnd();
