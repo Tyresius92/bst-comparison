@@ -22,6 +22,8 @@
 
 typedef struct rb_tree *RedBlack_T;
 
+//typedef void RedBlack_comparison_func()
+
 /**********************
  * FUNCTION CONTRACTS *
  * AND DECLARATIONS   *
@@ -34,10 +36,22 @@ typedef struct rb_tree *RedBlack_T;
  * 
  * CREs         n/a
  * UREs         system out of memory
+ *              
  * 
+ * @param       void * - pointer to a comparison function. if NULL is passed 
+ *                              as argument, strcmp is assumed. 
+ *              
+ *              comparison_function
+ *              @param          item being inserted (val1)
+ *              @param          item from tree which we are comparing (val2)
+ *              @return         int 
+ *                               - zero (0) if val1 == val2
+ *                               - positive value (n > 0) if val1 > val2
+ *                               - negative value (n < 0) if val1 < val2
+ *        
  * @return      pointer to empty rb_tree
  */
-RedBlack_T new_rb_tree(); 
+RedBlack_T new_rb_tree(void *comparison_func); 
 
 /*
  * insert_value
@@ -53,7 +67,7 @@ RedBlack_T new_rb_tree();
  * @param       void * - a pointer to any item to be inserted
  * @return      n/a
  */
-int insert_value(RedBlack_T tree, char * value);
+int insert_value(RedBlack_T tree, void * value);
 
 /*
  * free_rb_tree
@@ -83,20 +97,28 @@ void free_rb_tree(RedBlack_T tree);
 bool rb_tree_is_empty(RedBlack_T tree); 
 
 /*
- * //TODO
- * //Write Function Contract
- */ 
-bool is_in_tree(RedBlack_T tree, char *value);
+ * search
+ * 
+ */
+void *rb_search(RedBlack_T tree, void *value); 
 
 /*
- * rb_map
+ * rb_map_inorder
  * 
  * given a tree and a pointer to a function, applies the function to every
- * element stored in the tree 
+ * element stored in the tree via an inorder walk
+ * example valid operations include: 
+ *              - print every value
+ *              - increment every stored value by one
  * 
  * CREs         tree == NULL
  *              func_to_apply == NULL
- * UREs         n/a
+ * UREs         func_to_apply modifies tree structure by performing different
+ *                      operations on each node. (for instance, subtracting 1 
+ *                      from the first node, 2 from the second, 3 from the 
+ *                      third...and n from the nth could result in the BST 
+ *                      property being invalidated)
+ *                              
  * 
  * @param       Redblack_T - tree to apply function to
  * @param       void * - pointer to a function
@@ -104,6 +126,8 @@ bool is_in_tree(RedBlack_T tree, char *value);
  *                              make use of when evaluating your function
  * @return      n/a
  */
-void rb_map(RedBlack_T tree, void *func_to_apply, void *cl); 
+void rb_map_inorder(RedBlack_T tree, 
+                    void func_to_apply(void *root, int depth, void *cl), 
+                    void *cl); 
 
 #endif

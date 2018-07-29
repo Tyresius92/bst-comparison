@@ -1,6 +1,7 @@
 #include "rb_tree.h"
 #include <assert.h>
 #include <string.h>
+#include <stdint.h>
 
 /*** MACRO DEFINITIONS ***/
 
@@ -8,7 +9,7 @@
 #define RED 'r'
 
 typedef struct Node {
-        char * value;
+        void * value;
         struct Node * parent;
         struct Node * left; 
         struct Node * right; 
@@ -17,6 +18,7 @@ typedef struct Node {
 
 struct rb_tree {
         Node * root; 
+        void * comparison_func; 
 };
 
 typedef RedBlack_T T; 
@@ -25,50 +27,62 @@ typedef RedBlack_T T;
  * PRIVATE FUNCTION DECLARATIONS *
  *********************************/ 
 
-Node *construct_node(char * value);
+Node *construct_node(void * value);
 void deallocate_all_tree_nodes(Node *n); 
-Node *private_insert(Node *root, Node *new_node);
+Node *private_insert(Node *root, Node *new_node, void *comparison_func(void *val1, void *val2));
 void fix_violation(RedBlack_T tree, Node *inserted);
 void rotate_left(RedBlack_T tree, Node *n); 
 void rotate_right(RedBlack_T tree, Node *n); 
+Node *find_in_tree(RedBlack_T tree, void *value, void *comparison_func(void *val1, void *val2));
+void rb_private_inorder_map(Node *root, 
+                            int depth,
+                            void func_to_apply(void *value, int depth, void *cl), 
+                            void *cl);
 
 /************************
  * FUNCTION DEFINITIONS *
  ************************/ 
 
-T new_rb_tree()
+T new_rb_tree(void *comparison_func)
 {
         T tree = malloc(sizeof(struct rb_tree)); 
 
         tree->root = NULL; 
 
+        if (comparison_func == NULL) {
+                tree->comparison_func = &strcmp; 
+        } else {
+                tree->comparison_func = comparison_func; 
+        }
+
         return tree; 
 }
 
-int insert_value(T tree, char *value)
+int insert_value(T tree, void *value)
 {
         assert(tree != NULL && value != NULL); 
 
         Node *new_node = construct_node(value); 
 
-        tree->root = private_insert(tree->root, new_node); 
+        tree->root = private_insert(tree->root, new_node, tree->comparison_func); 
 
         fix_violation(tree, new_node);  
 
         return 0;
 }
 
-Node *private_insert(Node *root, Node *new_node) 
+Node *private_insert(Node *root, Node *new_node, 
+                     void *comparison_func(void *val1, void *val2)) 
 {
         if (root == NULL) { 
                 return new_node; 
         }
 
-        if (strcmp(new_node->value, root->value) < 0) {
-                root->left = private_insert(root->left, new_node); 
+        if ((int)(intptr_t) comparison_func(new_node->value, root->value) < 0) {
+                root->left = private_insert(root->left, new_node, comparison_func); 
                 root->left->parent = root; 
         } else {
-                root->right = private_insert(root->right, new_node); 
+                root->right = private_insert(root->right, new_node, comparison_func); 
                 root->right->parent = root; 
         }
 
@@ -108,7 +122,7 @@ void fix_violation(RedBlack_T tree, Node *culprit)
 
                                 char temp = parent_node->color; 
                                 parent_node->color = grand_parent_node->color; 
-                                parent_node->color = temp; 
+                                grand_parent_node->color = temp; 
 
                                 culprit = parent_node; 
 
@@ -132,7 +146,7 @@ void fix_violation(RedBlack_T tree, Node *culprit)
 
                                 char temp = parent_node->color; 
                                 parent_node->color = grand_parent_node->color; 
-                                parent_node->color = temp; 
+                                grand_parent_node->color = temp; 
 
                                 culprit = parent_node; 
 
@@ -145,6 +159,7 @@ void fix_violation(RedBlack_T tree, Node *culprit)
 
 void rotate_left(RedBlack_T tree, Node *n)
 {
+
         Node *right_child = n->right; 
 
         n->right = right_child->left; 
@@ -169,7 +184,7 @@ void rotate_left(RedBlack_T tree, Node *n)
 }
 
 void rotate_right(RedBlack_T tree, Node *n)
-{
+{ 
         Node *left_child = n->left; 
 
         n->left = left_child->right; 
@@ -193,7 +208,7 @@ void rotate_right(RedBlack_T tree, Node *n)
         n->parent = left_child; 
 }
 
-Node *construct_node(char * value)
+Node *construct_node(void * value)
 {
         Node *new_node = (Node *) malloc(sizeof(Node)); 
 
@@ -207,14 +222,25 @@ Node *construct_node(char * value)
         return new_node; 
 }
 
-bool is_in_tree(RedBlack_T tree, char *value)
+void *rb_search(RedBlack_T tree, void *value)
+{
+        Node *result = find_in_tree(tree, value, tree->comparison_func); 
+
+        if (result != NULL) 
+                return (void *) result->value; 
+
+        return result; //AKA return NULL 
+}
+
+Node *find_in_tree(RedBlack_T tree, void *value, 
+                   void *comparison_func(void *val1, void *val2))
 {
         bool found = false; 
         Node *curr = tree->root; 
         int c = 0; 
 
         while (!found && curr != NULL) {
-                c = strcmp(value, curr->value); 
+                c = (int)(intptr_t) comparison_func(value, curr->value); 
 
                 if (c == 0) {
                         found = true; 
@@ -225,7 +251,7 @@ bool is_in_tree(RedBlack_T tree, char *value)
                 }
         }
 
-        return found; 
+        return curr; 
 }
 
 void free_rb_tree(RedBlack_T tree)
@@ -257,30 +283,26 @@ bool rb_tree_is_empty(RedBlack_T tree)
                 return false; 
 }
 
-
-
-
-
-void in_order_print(Node *root, int recurse_level)
+void rb_map_inorder(RedBlack_T tree,  
+                    void func_to_apply(void *value, int depth, void *cl), 
+                    void *cl)
 {
-        if (root != NULL) {
-                in_order_print(root->left, recurse_level + 1);
-                fprintf(stderr, "%s\t%c\t%d\n", root->value, root->color, recurse_level); 
-                in_order_print(root->right, recurse_level + 1); 
-        }
+        int depth = 0; 
+
+        rb_private_inorder_map(tree->root, depth, func_to_apply, cl); 
 }
 
-
-
-
-
-
-void rb_map(RedBlack_T tree, void *func_to_apply, void *cl)
+void rb_private_inorder_map(Node *root, 
+                            int depth, 
+                            void func_to_apply(void *root, int depth, void *cl), 
+                            void *cl)
 {
-        (void) func_to_apply; 
-        (void) cl; 
 
-        in_order_print(tree->root, 0); 
+        if (root->left != NULL)
+                rb_private_inorder_map(root->left, depth + 1, func_to_apply, cl); 
 
+        func_to_apply(root->value, depth, cl); 
+
+        if (root->right != NULL)
+                rb_private_inorder_map(root->right, depth + 1, func_to_apply, cl); 
 }
-
