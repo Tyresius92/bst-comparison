@@ -52,7 +52,7 @@ typedef struct rb_tree *RedBlack_T;
 RedBlack_T new_rb_tree(void *comparison_func); 
 
 /*
- * free_rb_tree
+ * rb_tree_free
  * 
  * given a pointer to a red black tree, deallocates the tree and all nodes
  * contained within it, then sets the value of the pointer to NULL
@@ -63,28 +63,7 @@ RedBlack_T new_rb_tree(void *comparison_func);
  * @param       RedBlack_T - the tree to be freed
  * @return      n/a
  */
-void free_rb_tree(RedBlack_T tree); 
-
-/*
- * insert_value
- * 
- * given a value (cast to void), inserts the value into the given RB Tree
- * 
- * CREs         tree == NULL
- *              value == NULL
- * 
- * UREs         system out of memory
- * 
- * @param       RedBlack_T - tree in which to insert value
- * @param       void * - a pointer to any item to be inserted
- * @return      n/a
- */
-int rb_insert_value(RedBlack_T tree, void * value);
-
-/*
- * rb_delete_value
- */
-void rb_delete_value(RedBlack_T tree, void * value); 
+void rb_tree_free(RedBlack_T tree); 
 
 /*
  * rb_tree_is_empty
@@ -100,22 +79,109 @@ void rb_delete_value(RedBlack_T tree, void * value);
 bool rb_tree_is_empty(RedBlack_T tree); 
 
 /*
- * search
+ * insert_value
+ * 
+ * given a value (cast to void), inserts the value into the given RB Tree
+ * 
+ * CREs         tree == NULL
+ *              value == NULL
+ * 
+ * UREs         system out of memory
+ *              attempting to pass in a value which cannot be compared with 
+ *                      your comparison function
+ * 
+ * @param       RedBlack_T - tree in which to insert value
+ * @param       void * - a pointer to any item to be inserted
+ * @return      n/a
+ */
+int rb_insert_value(RedBlack_T tree, void *value);
+
+/*
+ * rb_search
+ * 
+ * given a tree and a value to search for, returns a pointer to the stored 
+ * value, or NULL if the value is not found. If duplicates are in the tree, 
+ * returns the first one found
+ * 
+ * @param       RedBlack_T - tree in which to search
+ * @param       void * - value to search for
+ * @return      void * - pointer to the value that was found
  */
 void *rb_search(RedBlack_T tree, void *value); 
 
 /*
+ * rb_delete_value
+ * 
+ * given a value, deletes the first instance of it that is found in the tree
+ * if a value is given that is not in the tree, this function has no effect
+ * 
+ * CREs         tree == NULL
+ * UREs         n/a
+ * 
+ * @param       RedBlack_T - tree to find the value in
+ * @param       void * - pointer to the value to be deleted
+ * @return      n/a
+ */
+void rb_delete_value(RedBlack_T tree, void *value); 
+
+/*
  * tree_minimum
+ * 
+ * given a tree, returns the minimum value stored in the tree
+ * 
+ * CREs         tree == NULL
+ * UREs         n/a
+ * 
+ * @param       RedBlack_T - tree to be searched
+ * @return      void * - pointer to min value
  */
 void *tree_minimum(RedBlack_T tree); 
 
 /*
  * tree_maximum
+ * 
+ * given a tree, returns the maximum value stored in the tree
+ * 
+ * CREs         tree == NULL
+ * UREs         n/a
+ * 
+ * @param       RedBlack_T - tree to be searched
+ * @return      void * - pointer to max value
  */
 void *tree_maximum(RedBlack_T tree); 
 
+/*
+ * successor_of_value
+ * 
+ * given a tree and a value, returns the first successor of that value
+ * returned value will always be distinct from value, even if there are 
+ * duplicates; returns NULL if no successor
+ * 
+ * CREs         tree == NULL
+ *              value == NULL
+ * UREs         n/a
+ * 
+ * @param       RedBlack_T - tree to be searched
+ * @param       void * - value to find the successor of
+ * @return      void * - value of the successor
+ */
 void *successor_of_value(RedBlack_T tree, void *value); 
 
+/*
+ * predecessor_of_value
+ * 
+ * given a tree and a value, returns the first predecessor of that value
+ * returned value will always be distinct from value, even if there are 
+ * duplicates; returns NULL if no predecessor
+ * 
+ * CREs         tree == NULL
+ *              value == NULL
+ * UREs         n/a
+ * 
+ * @param       RedBlack_T - tree to be searched
+ * @param       void * - value to find the predecessor of
+ * @return      void * - value of the predecessor
+ */
 void *predecessor_of_value(RedBlack_T tree, void *value); 
 
 /*
@@ -144,7 +210,7 @@ void *predecessor_of_value(RedBlack_T tree, void *value);
  * @return      n/a
  */
 void rb_map_inorder(RedBlack_T tree, 
-                    void func_to_apply(void *root, int depth, void *cl), 
+                    void func_to_apply(void *value, int depth, void *cl), 
                     void *cl); 
 
 /*
@@ -173,7 +239,7 @@ void rb_map_inorder(RedBlack_T tree,
  * @return      n/a
  */
 void rb_map_preorder(RedBlack_T tree, 
-                     void func_to_apply(void *root, int depth, void *cl), 
+                     void func_to_apply(void *value, int depth, void *cl), 
                      void *cl); 
 
 /*
@@ -202,7 +268,7 @@ void rb_map_preorder(RedBlack_T tree,
  * @return      n/a
  */
 void rb_map_postorder(RedBlack_T tree, 
-                      void func_to_apply(void *root, int depth, void *cl), 
+                      void func_to_apply(void *value, int depth, void *cl), 
                       void *cl); 
 
 #endif

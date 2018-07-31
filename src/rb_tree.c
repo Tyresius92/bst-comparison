@@ -9,16 +9,16 @@
 #define RED 'r'
 
 typedef struct Node {
-        void * value;
-        struct Node * parent;
-        struct Node * left; 
-        struct Node * right; 
+        void *value;
+        struct Node *parent;
+        struct Node *left; 
+        struct Node *right; 
         char color; 
 } Node;
 
 struct rb_tree {
-        Node * root; 
-        void * comparison_func; 
+        Node *root; 
+        void *comparison_func; 
 };
 
 typedef RedBlack_T T; 
@@ -27,35 +27,309 @@ typedef RedBlack_T T;
  * PRIVATE FUNCTION DECLARATIONS *
  *********************************/ 
 
-Node *construct_node(void * value);
-void deallocate_all_tree_nodes(Node *n); 
-Node *private_insert(Node *root, Node *new_node, void *comparison_func(void *val1, void *val2));
-void fix_violation(RedBlack_T tree, Node *inserted);
-void rotate_left(RedBlack_T tree, Node *n); 
-void rotate_right(RedBlack_T tree, Node *n); 
-Node *private_find_in_tree(RedBlack_T tree, void *value, void *comparison_func(void *val1, void *val2));
+/*
+ * private_deallocate_all_tree_nodes
+ * 
+ * helper function for rb_tree_free. Recursively deletes all nodes in 
+ * the subtree rooted at n (rb_tree_free passes in tree->root)
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - the root of a subtree to delete
+ * @return      n/a
+ */
+void private_deallocate_all_tree_nodes(Node *n); 
+
+/* 
+ * rotate_left
+ * 
+ * given a tree and a node n, moves n's right child to be the child of n's 
+ * parent, and makes n the child of its right child
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree in which rotation is occuring
+ * @param       Node * - pointer to the node to be rotated
+ * @return      n/a
+ */
+void rotate_left(T tree, Node *n); 
+
+/* 
+ * rotate_right
+ * 
+ * given a tree and a node n, moves n's left child to be the child of n's 
+ * parent, and makes n the child of its left child
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree in which rotation is occuring
+ * @param       Node * - pointer to the node to be rotated
+ * @return      n/a
+ */
+void rotate_right(T tree, Node *n); 
+
+/*
+ * construct_node
+ * 
+ * given a value, constructs a node containing that value, with all relational
+ * pointers set to NULL, and color set to RED
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       void * - value to go into the node
+ * @return      Node * - pointer to the new node
+ */ 
+Node *construct_node(void *value);
+
+
+/*
+ * private_insert_value
+ *
+ * helper function for rb_insert_value. does the actual work of inserting
+ * the value. 
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - the root of the current subtree (rb_insert_value 
+ *                      passes in tree->root)
+ * @param       Node * - a pointer to the node with the value to be deleted
+ * @param       void * - a pointer to the comparison function for the current
+ *                      root
+ * @return      a pointer to the most recently touched node 
+ */
+Node *private_insert_value(Node *root, Node *new_node, 
+                           void *comparison_func(void *val1, void *val2));
+
+/*
+ * fix_insertion_violation
+ * 
+ * given a tree and a pointer to the most recently inserted node,
+ * fixes any violations of the red-black properties in tree
+ * 
+ * CREs         tree == NULL
+ * UREs         n/a
+ * 
+ * @param       T - tree in which we are fixing violations
+ * @param       Node * - pointer to the most recently inserted node
+ * @return      n/a
+ */
+void fix_insertion_violation(T tree, Node *inserted);
+
+/*
+ * private_find_in_tree
+ * 
+ * private helper function for rb_search and rb_delete_value. 
+ * given a tree, a value, and a comparison function, returns the first 
+ * located node with the value we are looking for
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree in which we are searching
+ * @param       void * - pointer to the value we are searching for
+ * @param       void * - pointer to the comparison function for that tree
+ * @return      Node * - pointer to the node containing value
+ */
+Node *private_find_in_tree(T tree, void *value, 
+                           void *comparison_func(void *val1, void *val2));
+
+/* 
+ * rb_transplant
+ * 
+ * given a tree, a pointer to node u and a pointer to node v, replaces u with v
+ * in the tree
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree in which we are transplanting
+ * @param       Node * - pointer to node to be replaced
+ * @param       Node * - pointer to node to replace with
+ * @return      n/a
+ */
+void rb_transplant(T tree, Node *u, Node *v); 
+
+/* 
+ * rb_delete_fixup
+ *
+ * given a tree and a pointer to the former subtree of the deleted node, 
+ * restores the red black tree properties. all deleted nodes have at most one 
+ * child; two child nodes are replaced by their successor, which by definition
+ * has at most one child. that child is the second parameter to this function
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree where a value was deleted
+ * @param       Node * - former child of the deleted node
+ * @return      n/a
+ */
+void rb_delete_fixup(T tree, Node *x);
+
+/*
+ * private_successor_of_value
+ * 
+ * private helper function for successor_of_value
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree in which to search
+ * @param       void * - pointer to the value we want the successor of
+ * @param       void * - pointer to the comparison function associated with tree
+ * @return      void * - pointer to the successor's value (or NULL if no 
+ *                      successor exists)
+ */
+void *private_successor_of_value(T tree, void *value, 
+                                 void *comparison_func(void *val1, void *val2));
+
+/*
+ * private_predecessor_of_value
+ * 
+ * private helper function for predcessor_of_value
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       T - tree in which to search
+ * @param       void * - pointer to the value we want the predecessor of
+ * @param       void * - pointer to the comparison function associated with tree
+ * @return      void * - pointer to the predecessor's value (or NULL if no 
+ *                      predecessor exists)
+ */
+void *private_predecessor_of_value(T tree, void *value, 
+                                   void *comparison_func(void *val1, void *val2)); 
+
+/*
+ * private_find_successor
+ * 
+ * private general use helper function - given a pointer to node, returns the 
+ * node containing the successor
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - node that we want the successor of
+ * @return      Node * - node containing the successor
+ */
+Node *private_find_successor(Node *n); 
+
+/*
+ * private_find_predecessor
+ * 
+ * private general use helper function - given a pointer to node, returns the 
+ * node containing the predecessor
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - node that we want the predecessor of
+ * @return      Node * - node containing the predecessor
+ */
+Node *private_find_predecessor(Node *n); 
+
+/*
+ * private_subtree_minimum
+ * 
+ * given a node, returns the node containing the minimum value in the subtree 
+ * rooted at that node
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - root of the subtree in question
+ * @return      Node * - node containing the minimum
+ */ 
+Node *private_subtree_minimum(Node *curr_node);
+
+/*
+ * private_subtree_minimum
+ * 
+ * given a node, returns the node containing the minimum value in the subtree 
+ * rooted at that node
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - root of the subtree in question
+ * @return      Node * - node containing the minimum
+ */ 
+Node *private_subtree_maximum(Node *curr_node);
+
+/*
+ * rb_private_inorder_map
+ * 
+ * private helper function for rb_map_inorder
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - root of the current subtree - rb_map_inorder passes 
+ *                      in tree->root
+ * @param       int - the current depth in the tree
+ * @param       void - function to be applied to every node
+ * @param       void * - pointer to closure, contains any data needed for 
+ *                      evaluation of func_to_apply
+ * @return      n/a
+ */
 void rb_private_inorder_map(Node *root, 
                             int depth,
                             void func_to_apply(void *value, int depth, void *cl), 
                             void *cl);
+
+/*
+ * rb_private_preorder_map
+ * 
+ * private helper function for rb_map_preorder
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - root of the current subtree - rb_map_preorder passes 
+ *                      in tree->root
+ * @param       int - the current depth in the tree
+ * @param       void - function to be applied to every node
+ * @param       void * - pointer to closure, contains any data needed for 
+ *                      evaluation of func_to_apply
+ * @return      n/a
+ */
 void rb_private_preorder_map(Node *root, 
                              int depth, 
-                             void func_to_apply(void *root, int depth, void *cl), 
+                             void func_to_apply(void *value, int depth, void *cl), 
                              void *cl);
+
+/*
+ * rb_private_postorder_map
+ * 
+ * private helper function for rb_map_postorder
+ * 
+ * CREs         n/a
+ * UREs         n/a
+ * 
+ * @param       Node * - root of the current subtree - rb_map_postorder passes 
+ *                      in tree->root
+ * @param       int - the current depth in the tree
+ * @param       void - function to be applied to every node
+ * @param       void * - pointer to closure, contains any data needed for 
+ *                      evaluation of func_to_apply
+ * @return      n/a
+ */
 void rb_private_postorder_map(Node *root, 
                               int depth, 
-                              void func_to_apply(void *root, int depth, void *cl), 
+                              void func_to_apply(void *value, int depth, void *cl), 
                               void *cl);
-Node *find_successor(Node *n); 
-Node *find_predecessor(Node *n); 
-void rb_transplant(T tree, Node *u, Node *v); 
-void rb_delete_fixup(T tree, Node *x);
-Node *subtree_minimum(Node *curr_node);
-Node *subtree_maximum(Node *curr_node);
-void *private_successor_of_value(RedBlack_T tree, void *value, 
-                                 void *comparison_func(void *val1, void *val2));
-void *private_predecessor_of_value(RedBlack_T tree, void *value, 
-                                 void *comparison_func(void *val1, void *val2)); 
+
+
+
+
+/*****************************
+ * PRIVATE WRAPPED FUNCTIONS *
+ *****************************/ 
 
 /************************
  * FUNCTION DEFINITIONS *
@@ -76,16 +350,226 @@ T new_rb_tree(void *comparison_func)
         return tree; 
 }
 
+void rb_tree_free(T tree)
+{
+        assert(tree != NULL);
+
+        private_deallocate_all_tree_nodes(tree->root); 
+        free(tree); 
+
+        tree = NULL; 
+}
+
+bool rb_tree_is_empty(T tree)
+{
+        assert(tree != NULL); 
+
+        if (tree->root == NULL)
+                return true; 
+        else 
+                return false; 
+}
+
+void private_deallocate_all_tree_nodes(Node *n) {
+        if (n->left != NULL) 
+                deallocate_all_tree_nodes(n->left);
+        if (n->right != NULL)
+                deallocate_all_tree_nodes(n->right); 
+
+        free(n); 
+}
+
+void rotate_left(T tree, Node *n)
+{
+        Node *right_child = n->right; 
+
+        n->right = right_child->left; 
+
+        if (n->right != NULL)
+                n->right->parent = n; 
+
+        right_child->parent = n->parent; 
+
+        if(n->parent == NULL) {
+                tree->root = right_child; 
+        } else if (n == n->parent->left) {
+                (void) tree; 
+                n->parent->left = right_child; 
+        } else {
+                (void) tree; 
+                n->parent->right = right_child; 
+        }
+
+        right_child->left = n; 
+        n->parent = right_child; 
+}
+
+void rotate_right(T tree, Node *n)
+{ 
+        Node *left_child = n->left; 
+
+        n->left = left_child->right; 
+
+        if (n->left != NULL)
+                n->left->parent = n; 
+
+        left_child->parent = n->parent; 
+
+        if(n->parent == NULL) {
+                tree->root = left_child; 
+        } else if (n == n->parent->left) {
+                (void) tree; 
+                n->parent->left = left_child; 
+        } else {
+                (void) tree; 
+                n->parent->right = left_child; 
+        }
+
+        left_child->right = n; 
+        n->parent = left_child; 
+}
+
 int rb_insert_value(T tree, void *value)
 {
         assert(tree != NULL && value != NULL); 
 
         Node *new_node = construct_node(value); 
-        tree->root = private_insert(tree->root, new_node, tree->comparison_func); 
+        tree->root = private_insert_value(tree->root, new_node, tree->comparison_func); 
 
-        fix_violation(tree, new_node);  
+        fix_insertion_violation(tree, new_node);  
 
         return 0;
+}
+
+Node *construct_node(void *value)
+{
+        Node *new_node = (Node *) malloc(sizeof(Node)); 
+
+        new_node->parent = NULL;
+        new_node->left = NULL; 
+        new_node->right = NULL; 
+        new_node->value = value; 
+
+        new_node->color = RED; 
+
+        return new_node; 
+}
+
+Node *private_insert_value(Node *root, Node *new_node, 
+                           void *comparison_func(void *val1, void *val2)) 
+{
+        if (root == NULL) { 
+                return new_node; 
+        }
+
+        if ((int)(intptr_t) comparison_func(new_node->value, root->value) < 0) {
+                root->left = private_insert_value(root->left, new_node, comparison_func); 
+                root->left->parent = root; 
+        } else {
+                root->right = private_insert_value(root->right, new_node, comparison_func); 
+                root->right->parent = root; 
+        }
+
+        return root; 
+}
+
+void fix_insertion_violation(T tree, Node *culprit)
+{
+        Node *parent_node = NULL; 
+        Node *grand_parent_node = NULL; 
+
+        while ((culprit != tree->root) && (culprit->color != BLACK) && (culprit->parent->color == RED)) {
+                
+                parent_node = culprit->parent; 
+                grand_parent_node = culprit->parent->parent; 
+
+                if (parent_node == grand_parent_node->left){
+
+                        Node *uncle = grand_parent_node->right; 
+
+                        if (uncle != NULL && uncle->color == RED) {
+
+                                grand_parent_node->color = RED; 
+                                parent_node->color = BLACK; 
+                                uncle->color = BLACK; 
+                                culprit = grand_parent_node; 
+
+                        } else {
+
+                                if (culprit == parent_node->right) {
+                                        rotate_left(tree, parent_node); 
+                                        culprit = parent_node; 
+                                        parent_node = culprit->parent; 
+                                }
+
+                                rotate_right(tree, grand_parent_node); 
+
+                                char temp = parent_node->color; 
+                                parent_node->color = grand_parent_node->color; 
+                                grand_parent_node->color = temp; 
+
+                                culprit = parent_node; 
+
+                        }
+                } else { // parent_node == grand_parent_node->right
+                        Node *uncle = grand_parent_node->left; 
+
+                        if ((uncle != NULL) && (uncle->color == RED)) {
+                                grand_parent_node->color = RED; 
+                                parent_node->color = BLACK; 
+                                uncle->color = BLACK; 
+                                culprit = grand_parent_node; 
+                        } else {
+                                if (culprit == parent_node->left) {
+                                        rotate_right(tree, parent_node); 
+                                        culprit = parent_node; 
+                                        parent_node = culprit->parent; 
+                                }
+
+                                rotate_left(tree, grand_parent_node);
+
+                                char temp = parent_node->color; 
+                                parent_node->color = grand_parent_node->color; 
+                                grand_parent_node->color = temp; 
+
+                                culprit = parent_node; 
+                        }
+                }
+        }
+
+        tree->root->color = BLACK; 
+}
+
+void *rb_search(T tree, void *value)
+{
+        Node *result = private_find_in_tree(tree, value, tree->comparison_func); 
+
+        if (result != NULL) 
+                return (void *) result->value; 
+
+        return result; //AKA return NULL 
+}
+
+Node *private_find_in_tree(T tree, void *value, 
+                           void *comparison_func(void *val1, void *val2))
+{
+        bool found = false; 
+        Node *curr = tree->root; 
+        int c = 0; 
+
+        while (!found && curr != NULL) {
+                c = (int)(intptr_t) comparison_func(value, curr->value); 
+
+                if (c == 0) {
+                        found = true; 
+                } else if (c < 0) {
+                        curr = curr->left; 
+                } else if (c > 0) {
+                        curr = curr->right; 
+                }
+        }
+
+        return curr; 
 }
 
 void rb_delete_value(T tree, void *value)
@@ -109,7 +593,7 @@ void rb_delete_value(T tree, void *value)
                 subtree_of_deleted = delete_me->left; 
                 rb_transplant(tree, delete_me, delete_me->left);
         } else {
-                y = find_successor(delete_me); 
+                y = private_find_successor(delete_me); 
                 y_original_color = y->color; 
 
                 subtree_of_deleted = y->right; 
@@ -133,6 +617,19 @@ void rb_delete_value(T tree, void *value)
 
         if (y_original_color == BLACK) 
                 rb_delete_fixup(tree, subtree_of_deleted); 
+}
+
+void rb_transplant(T tree, Node *u, Node *v) 
+{
+        if (u->parent == NULL) 
+                tree->root = v; 
+        else if (u == u->parent->left)
+                u->parent->left = v; 
+        else 
+                u->parent->right = v;
+
+        if (v != NULL)
+                v->parent = u->parent; 
 }
 
 void rb_delete_fixup(T tree, Node *culprit)
@@ -197,32 +694,37 @@ void rb_delete_fixup(T tree, Node *culprit)
         culprit->color = BLACK; 
 }
 
-void rb_transplant(T tree, Node *u, Node *v) 
+void *tree_maximum(T tree)
 {
-        if (u->parent == NULL) 
-                tree->root = v; 
-        else if (u == u->parent->left)
-                u->parent->left = v; 
-        else 
-                u->parent->right = v;
-
-        if (v != NULL)
-                v->parent = u->parent; 
+        Node *result = private_subtree_maximum(tree->root); 
+        return result->value; 
 }
 
-void *successor_of_value(RedBlack_T tree, void *value)
+void *tree_minimum(T tree)
+{
+        Node *result = private_subtree_minimum(tree->root); 
+        return result->value; 
+}
+
+void *successor_of_value(T tree, void *value)
 {
         return private_successor_of_value(tree, value, tree->comparison_func); 
 }
 
-void *private_successor_of_value(RedBlack_T tree, void *value, 
+void *predecessor_of_value(T tree, void *value)
+{
+        return private_predecessor_of_value(tree, value, tree->comparison_func); 
+} 
+
+void *private_successor_of_value(T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
         Node *successor = NULL; 
+        int c; 
 
         while (curr_node != NULL) {
-                int c = (int)(intptr_t) comparison_func(value, curr_node->value);
+                c = (int)(intptr_t) comparison_func(value, curr_node->value);
 
                 if (c < 0) {
                         successor = curr_node; 
@@ -238,20 +740,15 @@ void *private_successor_of_value(RedBlack_T tree, void *value,
                 return successor->value; 
 }
 
-void *predecessor_of_value(RedBlack_T tree, void *value)
-{
-        return private_predecessor_of_value(tree, value, tree->comparison_func); 
-} 
-
-void *private_predecessor_of_value(RedBlack_T tree, void *value, 
-                                 void *comparison_func(void *val1, void *val2))
+void *private_predecessor_of_value(T tree, void *value, 
+                                   void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
         Node *successor = NULL; 
+        int c; 
 
         while (curr_node != NULL) {
-                int c = (int)(intptr_t) comparison_func(value, curr_node->value);
-
+                c = (int)(intptr_t) comparison_func(value, curr_node->value);
                 if (c > 0) {
                         successor = curr_node; 
                         curr_node = curr_node->right; 
@@ -266,34 +763,17 @@ void *private_predecessor_of_value(RedBlack_T tree, void *value,
                 return successor->value; 
 }
 
-void *tree_minimum(T tree)
+Node *private_find_successor(Node *n)
 {
-        Node *result = subtree_minimum(tree->root); 
-
-        return result->value; 
+        return private_subtree_minimum(n->right);  
 }
 
-void *tree_maximum(T tree)
+Node *private_find_predecessor(Node *n)
 {
-        Node *result = subtree_maximum(tree->root); 
-
-        return result->value; 
+        return private_subtree_maximum(n->left); 
 }
 
-Node *subtree_minimum(Node *curr_node)
-{
-        while (curr_node->left != NULL)
-                curr_node = curr_node->left; 
-
-        return curr_node;
-}
-
-Node *find_successor(Node *n)
-{
-        return subtree_minimum(n->right);  
-}
-
-Node *subtree_maximum(Node *curr_node)
+Node *private_subtree_maximum(Node *curr_node)
 {
         while (curr_node->right != NULL)
                 curr_node = curr_node->right; 
@@ -301,234 +781,25 @@ Node *subtree_maximum(Node *curr_node)
         return curr_node;
 }
 
-Node *find_predecessor(Node *n)
+Node *private_subtree_minimum(Node *curr_node)
 {
-        return subtree_maximum(n->left); 
+        while (curr_node->left != NULL)
+                curr_node = curr_node->left; 
+
+        return curr_node;
 }
 
-Node *private_insert(Node *root, Node *new_node, 
-                     void *comparison_func(void *val1, void *val2)) 
-{
-        if (root == NULL) { 
-                return new_node; 
-        }
-
-        if ((int)(intptr_t) comparison_func(new_node->value, root->value) < 0) {
-                root->left = private_insert(root->left, new_node, comparison_func); 
-                root->left->parent = root; 
-        } else {
-                root->right = private_insert(root->right, new_node, comparison_func); 
-                root->right->parent = root; 
-        }
-
-        return root; 
-}
-
-void fix_violation(RedBlack_T tree, Node *culprit)
-{
-        Node *parent_node = NULL; 
-        Node *grand_parent_node = NULL; 
-
-        while ((culprit != tree->root) && (culprit->color != BLACK) && (culprit->parent->color == RED)) {
-                
-                parent_node = culprit->parent; 
-                grand_parent_node = culprit->parent->parent; 
-
-                if (parent_node == grand_parent_node->left){
-
-                        Node *uncle = grand_parent_node->right; 
-
-                        if (uncle != NULL && uncle->color == RED) {
-
-                                grand_parent_node->color = RED; 
-                                parent_node->color = BLACK; 
-                                uncle->color = BLACK; 
-                                culprit = grand_parent_node; 
-
-                        } else {
-
-                                if (culprit == parent_node->right) {
-                                        rotate_left(tree, parent_node); 
-                                        culprit = parent_node; 
-                                        parent_node = culprit->parent; 
-                                }
-
-                                rotate_right(tree, grand_parent_node); 
-
-                                char temp = parent_node->color; 
-                                parent_node->color = grand_parent_node->color; 
-                                grand_parent_node->color = temp; 
-
-                                culprit = parent_node; 
-
-                        }
-                } else { // parent_node == grand_parent_node->right
-                        Node *uncle = grand_parent_node->left; 
-
-                        if ((uncle != NULL) && (uncle->color == RED)) {
-                                grand_parent_node->color = RED; 
-                                parent_node->color = BLACK; 
-                                uncle->color = BLACK; 
-                                culprit = grand_parent_node; 
-                        } else {
-                                if (culprit == parent_node->left) {
-                                        rotate_right(tree, parent_node); 
-                                        culprit = parent_node; 
-                                        parent_node = culprit->parent; 
-                                }
-
-                                rotate_left(tree, grand_parent_node);
-
-                                char temp = parent_node->color; 
-                                parent_node->color = grand_parent_node->color; 
-                                grand_parent_node->color = temp; 
-
-                                culprit = parent_node; 
-
-                        }
-                }
-        }
-
-        tree->root->color = BLACK; 
-}
-
-void rotate_left(RedBlack_T tree, Node *n)
-{
-        Node *right_child = n->right; 
-
-        n->right = right_child->left; 
-
-        if (n->right != NULL)
-                n->right->parent = n; 
-
-        right_child->parent = n->parent; 
-
-        if(n->parent == NULL) {
-                tree->root = right_child; 
-        } else if (n == n->parent->left) {
-                (void) tree; 
-                n->parent->left = right_child; 
-        } else {
-                (void) tree; 
-                n->parent->right = right_child; 
-        }
-
-        right_child->left = n; 
-        n->parent = right_child; 
-}
-
-void rotate_right(RedBlack_T tree, Node *n)
-{ 
-        Node *left_child = n->left; 
-
-        n->left = left_child->right; 
-
-        if (n->left != NULL)
-                n->left->parent = n; 
-
-        left_child->parent = n->parent; 
-
-        if(n->parent == NULL) {
-                tree->root = left_child; 
-        } else if (n == n->parent->left) {
-                (void) tree; 
-                n->parent->left = left_child; 
-        } else {
-                (void) tree; 
-                n->parent->right = left_child; 
-        }
-
-        left_child->right = n; 
-        n->parent = left_child; 
-}
-
-Node *construct_node(void * value)
-{
-        Node *new_node = (Node *) malloc(sizeof(Node)); 
-
-        new_node->parent = NULL;
-        new_node->left = NULL; 
-        new_node->right = NULL; 
-        new_node->value = value; 
-
-        new_node->color = RED; 
-
-        return new_node; 
-}
-
-void *rb_search(RedBlack_T tree, void *value)
-{
-        Node *result = private_find_in_tree(tree, value, tree->comparison_func); 
-
-        if (result != NULL) 
-                return (void *) result->value; 
-
-        return result; //AKA return NULL 
-}
-
-Node *private_find_in_tree(RedBlack_T tree, void *value, 
-                           void *comparison_func(void *val1, void *val2))
-{
-        bool found = false; 
-        Node *curr = tree->root; 
-        int c = 0; 
-
-        while (!found && curr != NULL) {
-                c = (int)(intptr_t) comparison_func(value, curr->value); 
-
-                if (c == 0) {
-                        found = true; 
-                } else if (c < 0) {
-                        curr = curr->left; 
-                } else if (c > 0) {
-                        curr = curr->right; 
-                }
-        }
-
-        return curr; 
-}
-
-void free_rb_tree(RedBlack_T tree)
-{
-        assert(tree != NULL);
-
-        deallocate_all_tree_nodes(tree->root); 
-        free(tree); 
-
-        tree = NULL; 
-}
-
-void deallocate_all_tree_nodes(Node *n) {
-        if (n->left != NULL) 
-                deallocate_all_tree_nodes(n->left);
-        if (n->right != NULL)
-                deallocate_all_tree_nodes(n->right); 
-
-        free(n); 
-}
-
-bool rb_tree_is_empty(RedBlack_T tree)
-{
-        assert(tree != NULL); 
-
-        if (tree->root == NULL)
-                return true; 
-        else 
-                return false; 
-}
-
-void rb_map_inorder(RedBlack_T tree,  
+void rb_map_inorder(T tree,  
                     void func_to_apply(void *value, int depth, void *cl), 
                     void *cl)
 {
         int depth = 0; 
-
         rb_private_inorder_map(tree->root, depth, func_to_apply, cl); 
 }
 
 void rb_private_inorder_map(Node *root, 
                             int depth, 
-                            void func_to_apply(void *root, int depth, void *cl), 
+                            void func_to_apply(void *value, int depth, void *cl), 
                             void *cl)
 {
 
@@ -541,18 +812,17 @@ void rb_private_inorder_map(Node *root,
                 rb_private_inorder_map(root->right, depth + 1, func_to_apply, cl); 
 }
 
-void rb_map_preorder(RedBlack_T tree, 
-                     void func_to_apply(void *root, int depth, void *cl), 
+void rb_map_preorder(T tree, 
+                     void func_to_apply(void *value, int depth, void *cl), 
                      void *cl)
 {
         int depth = 0; 
-
         rb_private_preorder_map(tree->root, depth, func_to_apply, cl); 
 }
 
 void rb_private_preorder_map(Node *root, 
                             int depth, 
-                            void func_to_apply(void *root, int depth, void *cl), 
+                            void func_to_apply(void *value, int depth, void *cl), 
                             void *cl)
 {
         func_to_apply(root->value, depth, cl); 
@@ -564,18 +834,17 @@ void rb_private_preorder_map(Node *root,
                 rb_private_preorder_map(root->right, depth + 1, func_to_apply, cl); 
 }
 
-void rb_map_postorder(RedBlack_T tree, 
-                      void func_to_apply(void *root, int depth, void *cl), 
+void rb_map_postorder(T tree, 
+                      void func_to_apply(void *value, int depth, void *cl), 
                       void *cl)
 {
         int depth = 0; 
-
         rb_private_postorder_map(tree->root, depth, func_to_apply, cl); 
 }
 
 void rb_private_postorder_map(Node *root, 
                               int depth, 
-                              void func_to_apply(void *root, int depth, void *cl), 
+                              void func_to_apply(void *value, int depth, void *cl), 
                               void *cl)
 {
         if (root->left != NULL)
@@ -585,5 +854,4 @@ void rb_private_postorder_map(Node *root,
                 rb_private_postorder_map(root->right, depth + 1, func_to_apply, cl); 
 
         func_to_apply(root->value, depth, cl); 
-
 }
