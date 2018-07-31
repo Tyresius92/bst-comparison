@@ -20,7 +20,7 @@ void test_new_rb_tree(void)
 void test_insert_string(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL);
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "Hello")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "Hello")); 
 
         free_rb_tree(test_tree); 
 }
@@ -36,7 +36,7 @@ void test_is_empty_on_empty_tree(void)
 void test_is_empty_one_item_tree(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL);
-        insert_value(test_tree, "hello");
+        rb_insert_value(test_tree, "hello");
 
         TEST_ASSERT_FALSE(rb_tree_is_empty(test_tree)); 
 
@@ -46,12 +46,12 @@ void test_is_empty_one_item_tree(void)
 void test_insert_several_values(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "hello")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "world"));
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "the"));
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "earth"));
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "says"));
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "hello"));
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "hello")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "world"));
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "the"));
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "earth"));
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "says"));
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "hello"));
 
         free_rb_tree(test_tree); 
 }
@@ -59,18 +59,18 @@ void test_insert_several_values(void)
 void test_insert_many_times_and_force_rebalancing(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "a")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "b")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "c")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "d")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "e")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "f")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "g")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "h")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "i")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "j")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "k")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "l")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "a")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "b")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "c")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "d")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "e")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "f")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "g")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "h")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "i")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "j")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "k")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "l")); 
 
         free_rb_tree(test_tree); 
 }
@@ -78,18 +78,18 @@ void test_insert_many_times_and_force_rebalancing(void)
 void test_insert_reversed_order_and_force_rebalancing(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "l")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "k")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "j")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "i")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "h")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "g")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "f")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "e")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "d")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "c")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "b")); 
-        TEST_ASSERT_EQUAL(0, insert_value(test_tree, "a")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "l")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "k")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "j")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "i")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "h")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "g")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "f")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "e")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "d")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "c")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "b")); 
+        TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, "a")); 
 
         free_rb_tree(test_tree); 
 }
@@ -98,17 +98,17 @@ void test_search(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL); 
 
-        insert_value(test_tree, "a"); 
+        rb_insert_value(test_tree, "a"); 
         TEST_ASSERT_NOT_NULL(rb_search(test_tree, "a")); 
         TEST_ASSERT_EQUAL_STRING("a", rb_search(test_tree, "a")); 
 
         TEST_ASSERT_NULL(rb_search(test_tree, "b")); 
-        insert_value(test_tree, "b"); 
+        rb_insert_value(test_tree, "b"); 
         TEST_ASSERT_NOT_NULL(rb_search(test_tree, "b")); 
         TEST_ASSERT_EQUAL_STRING("b", rb_search(test_tree, "b")); 
 
         TEST_ASSERT_NULL(rb_search(test_tree, "hello")); 
-        insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "hello"); 
         TEST_ASSERT_NOT_NULL(rb_search(test_tree, "hello")); 
         TEST_ASSERT_EQUAL_STRING("a", rb_search(test_tree, "a")); 
 
@@ -137,7 +137,7 @@ void test_insert_ints(void)
 
         for (int i = 0; i < 10; i++) {
                 test_ptr = &a[i]; 
-                TEST_ASSERT_EQUAL(0, insert_value(test_tree, test_ptr)); 
+                TEST_ASSERT_EQUAL(0, rb_insert_value(test_tree, test_ptr)); 
         }
 
         free_rb_tree(test_tree); 
@@ -153,7 +153,7 @@ void test_search_for_ints(void)
 
         for (int i = 0; i < 10; i++) {
                 test_ptr = &a[i]; 
-                insert_value(test_tree, test_ptr); 
+                rb_insert_value(test_tree, test_ptr); 
         }
 
         int x = 4; 
@@ -172,17 +172,19 @@ void test_search_for_ints(void)
 }
 
 struct string_closure_size_six {
-        int depth_ray[6]; 
         int index; 
+        int depth_ray[6]; 
+        char *word_ray[6]; 
 };
 
 
-void function_to_apply_test_map_inorder_string(void *value, int depth, void *cl)
+void function_to_apply_test_map_string(void *value, int depth, void *cl)
 {
-        struct *closure = (struct string_closure_size_six *) cl; 
-                
+        struct string_closure_size_six *closure = (struct string_closure_size_six *) cl; 
+        int index = closure->index; 
+        
         closure->depth_ray[index] = depth; 
-
+        closure->word_ray[index] = value; 
         closure->index = index + 1; 
 }
 
@@ -190,20 +192,186 @@ void test_rb_map_inorder_string(void)
 {
         RedBlack_T test_tree = new_rb_tree(NULL); 
 
+        int expected_depth[] = { 2, 1, 3, 2, 0, 1 };
+        char *expected_words[] = {"earth", "hello", "hello", "says", "the", "world"};
+
         char *word_ray[] = {"hello", "world", "the", "earth", "says", "hello"}; 
-        int expected_depth[] = { 2, 1, 3, 2, 0, 1 }
 
-        insert_value(test_tree, word_ray[0]); 
-        insert_value(test_tree, word_ray[1]);
-        insert_value(test_tree, word_ray[2]);
-        insert_value(test_tree, word_ray[3]);
-        insert_value(test_tree, word_ray[4]);
-        insert_value(test_tree, word_ray[5]);
+        for (int i = 0; i < 6; i++) {
+                rb_insert_value(test_tree, word_ray[i]); 
+        }
 
-        string_closure_size_six->depth_ray = {-1, -1, -1, -1, -1, -1}
-        string_closure_size_six->index = 0; 
+        struct string_closure_size_six cl; 
+        cl.index = 0; 
         
-        rb_map_inorder(test_tree, &function_to_apply_test_map_inorder_string, &string_closure_size_six);
+        rb_map_inorder(test_tree, &function_to_apply_test_map_string, &cl);
+
+        for (int i = 0; i < 6; i++) {
+                TEST_ASSERT_EQUAL(expected_depth[i], cl.depth_ray[i]);
+                TEST_ASSERT_EQUAL_STRING(expected_words[i], cl.word_ray[i]);  
+        }
+
+        free_rb_tree(test_tree); 
+}
+
+void test_rb_map_preorder_string(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+
+        int expected_depth[] = { 0, 1, 2, 2, 3, 1 };
+        char *expected_words[] = {"the", "hello", "earth", "says", "hello", "world"};
+
+        char *word_ray[] = {"hello", "world", "the", "earth", "says", "hello"}; 
+
+        for (int i = 0; i < 6; i++) {
+                rb_insert_value(test_tree, word_ray[i]); 
+        }
+
+        struct string_closure_size_six cl; 
+        cl.index = 0; 
+        
+        rb_map_preorder(test_tree, &function_to_apply_test_map_string, &cl);
+
+        for (int i = 0; i < 6; i++) {
+                TEST_ASSERT_EQUAL(expected_depth[i], cl.depth_ray[i]);
+                TEST_ASSERT_EQUAL_STRING(expected_words[i], cl.word_ray[i]);  
+        }
+
+        free_rb_tree(test_tree); 
+}
+
+void test_rb_map_postorder_string(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+
+        int expected_depth[] = { 2, 3, 2, 1, 1, 0 };
+        char *expected_words[] = {"earth", "hello", "says", "hello", "world", "the"};
+
+        char *word_ray[] = {"hello", "world", "the", "earth", "says", "hello"}; 
+
+        for (int i = 0; i < 6; i++) {
+                rb_insert_value(test_tree, word_ray[i]); 
+        }
+
+        struct string_closure_size_six cl; 
+        cl.index = 0; 
+        
+        rb_map_postorder(test_tree, &function_to_apply_test_map_string, &cl);
+
+        for (int i = 0; i < 6; i++) {
+                TEST_ASSERT_EQUAL(expected_depth[i], cl.depth_ray[i]);
+                TEST_ASSERT_EQUAL_STRING(expected_words[i], cl.word_ray[i]);  
+        }
+
+        free_rb_tree(test_tree); 
+}
+
+void test_delete_value(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+        rb_insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "world");
+        rb_insert_value(test_tree, "the");
+        rb_insert_value(test_tree, "earth");
+        rb_insert_value(test_tree, "says");
+
+        TEST_ASSERT_EQUAL_STRING("hello", rb_search(test_tree, "hello")); 
+
+        rb_delete_value(test_tree, "hello"); 
+
+        TEST_ASSERT_NULL(rb_search(test_tree, "hello")); 
+
+        free_rb_tree(test_tree); 
+}
+
+void test_delete_value_not_in_tree(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+        rb_insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "world");
+        rb_insert_value(test_tree, "the");
+        rb_insert_value(test_tree, "earth");
+        rb_insert_value(test_tree, "says");
+
+        TEST_ASSERT_EQUAL_STRING("hello", rb_search(test_tree, "hello")); 
+        TEST_ASSERT_EQUAL_STRING("world", rb_search(test_tree, "world"));
+        TEST_ASSERT_EQUAL_STRING("the", rb_search(test_tree, "the"));
+        TEST_ASSERT_EQUAL_STRING("earth", rb_search(test_tree, "earth"));
+        TEST_ASSERT_EQUAL_STRING("says", rb_search(test_tree, "says"));
+        TEST_ASSERT_NULL(rb_search(test_tree, "not_in_tree"));
+
+        rb_delete_value(test_tree, "not_in_tree"); 
+
+        TEST_ASSERT_EQUAL_STRING("hello", rb_search(test_tree, "hello")); 
+        TEST_ASSERT_EQUAL_STRING("world", rb_search(test_tree, "world"));
+        TEST_ASSERT_EQUAL_STRING("the", rb_search(test_tree, "the"));
+        TEST_ASSERT_EQUAL_STRING("earth", rb_search(test_tree, "earth"));
+        TEST_ASSERT_EQUAL_STRING("says", rb_search(test_tree, "says"));
+        TEST_ASSERT_NULL(rb_search(test_tree, "not_in_tree"));
+
+        free_rb_tree(test_tree); 
+}
+
+void test_tree_minimum(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+        rb_insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "world");
+        rb_insert_value(test_tree, "the");
+        rb_insert_value(test_tree, "earth");
+        rb_insert_value(test_tree, "says");
+
+        TEST_ASSERT_EQUAL_STRING("earth", tree_minimum(test_tree)); 
+
+        free_rb_tree(test_tree); 
+}
+
+void test_tree_maximum(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+        rb_insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "world");
+        rb_insert_value(test_tree, "the");
+        rb_insert_value(test_tree, "earth");
+        rb_insert_value(test_tree, "says");
+
+        TEST_ASSERT_EQUAL_STRING("world", tree_maximum(test_tree)); 
+
+        free_rb_tree(test_tree); 
+}
+
+void test_successor_of_value(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+        rb_insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "world");
+        rb_insert_value(test_tree, "the");
+        rb_insert_value(test_tree, "earth");
+        rb_insert_value(test_tree, "says");
+
+        TEST_ASSERT_EQUAL_STRING("world", successor_of_value(test_tree, "the"));
+        TEST_ASSERT_EQUAL_STRING("hello", successor_of_value(test_tree, "earth"));
+        TEST_ASSERT_EQUAL_STRING("the", successor_of_value(test_tree, "says")); 
+        TEST_ASSERT_EQUAL_STRING("says", successor_of_value(test_tree, "not_in_tree"));
+        TEST_ASSERT_NULL(successor_of_value(test_tree, "world"));
+
+        free_rb_tree(test_tree); 
+}
+
+void test_predecessor_of_value(void)
+{
+        RedBlack_T test_tree = new_rb_tree(NULL); 
+        rb_insert_value(test_tree, "hello"); 
+        rb_insert_value(test_tree, "world");
+        rb_insert_value(test_tree, "the");
+        rb_insert_value(test_tree, "earth");
+        rb_insert_value(test_tree, "says");
+
+        TEST_ASSERT_EQUAL_STRING("says", predecessor_of_value(test_tree, "the"));
+        TEST_ASSERT_EQUAL_STRING("hello", predecessor_of_value(test_tree, "says"));
+        TEST_ASSERT_EQUAL_STRING("earth", predecessor_of_value(test_tree, "hello"));  
+        TEST_ASSERT_EQUAL_STRING("hello", predecessor_of_value(test_tree, "not_in_tree"));
+        TEST_ASSERT_NULL(predecessor_of_value(test_tree, "earth"));
 
         free_rb_tree(test_tree); 
 }
@@ -222,8 +390,15 @@ int main(void)
         RUN_TEST(test_search); 
         RUN_TEST(test_insert_ints); 
         RUN_TEST(test_search_for_ints); 
-
         RUN_TEST(test_rb_map_inorder_string); 
+        RUN_TEST(test_rb_map_preorder_string); 
+        RUN_TEST(test_rb_map_postorder_string); 
+        RUN_TEST(test_delete_value); 
+        RUN_TEST(test_delete_value_not_in_tree); 
+        RUN_TEST(test_tree_minimum); 
+        RUN_TEST(test_tree_maximum); 
+        RUN_TEST(test_successor_of_value); 
+        RUN_TEST(test_predecessor_of_value); 
 
         UnityEnd();
         return 0;
