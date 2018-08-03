@@ -56,7 +56,7 @@ void test_insert_several_values(void)
         bst_free(test_tree); 
 }
 
-void test_insert_many_times_and_force_rebalancing(void)
+void test_insert_many_times(void)
 {
         BSTree_T test_tree = new_bst(NULL); 
         TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "a")); 
@@ -75,7 +75,7 @@ void test_insert_many_times_and_force_rebalancing(void)
         bst_free(test_tree); 
 }
 
-void test_insert_reversed_order_and_force_rebalancing(void)
+void test_insert_reversed_order(void)
 {
         BSTree_T test_tree = new_bst(NULL); 
         TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "l")); 
@@ -90,6 +90,25 @@ void test_insert_reversed_order_and_force_rebalancing(void)
         TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "c")); 
         TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "b")); 
         TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "a")); 
+
+        bst_free(test_tree); 
+}
+
+void test_insert_random_order(void)
+{
+        BSTree_T test_tree = new_bst(NULL); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "g")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "l")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "f")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "c")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "a")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "e")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "k")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "b")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "j")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "d")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "i")); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, "h")); 
 
         bst_free(test_tree); 
 }
@@ -423,14 +442,15 @@ int main(void)
         RUN_TEST(test_is_empty_on_empty_tree); 
         RUN_TEST(test_is_empty_one_item_tree); 
         RUN_TEST(test_insert_several_values); 
-        RUN_TEST(test_insert_many_times_and_force_rebalancing); 
-        RUN_TEST(test_insert_reversed_order_and_force_rebalancing); 
+        RUN_TEST(test_insert_many_times); 
+        RUN_TEST(test_insert_reversed_order); 
+        RUN_TEST(test_insert_random_order); 
         RUN_TEST(test_search); 
         RUN_TEST(test_insert_ints); 
         RUN_TEST(test_search_for_ints); 
-        //RUN_TEST(test_bst_map_inorder_string); 
-        //RUN_TEST(test_bst_map_preorder_string); 
-        //RUN_TEST(test_bst_map_postorder_string); 
+        RUN_TEST(test_bst_map_inorder_string); 
+        RUN_TEST(test_bst_map_preorder_string); 
+        RUN_TEST(test_bst_map_postorder_string); 
         RUN_TEST(test_delete_value); 
         RUN_TEST(test_delete_value_not_in_tree); 
         RUN_TEST(test_tree_minimum); 

@@ -195,8 +195,8 @@ void *predecessor_of_value(BSTree_T tree, void *value);
  * @return      n/a
  */
 void bst_map_inorder(BSTree_T tree, 
-                    void func_to_apply(void *value, int depth, void *cl), 
-                    void *cl); 
+                     void func_to_apply(void *value, int depth, void *cl), 
+                     void *cl); 
 
 /*
  * bst_map_preorder
@@ -224,8 +224,8 @@ void bst_map_inorder(BSTree_T tree,
  * @return      n/a
  */
 void bst_map_preorder(BSTree_T tree, 
-                     void func_to_apply(void *value, int depth, void *cl), 
-                     void *cl); 
+                      void func_to_apply(void *value, int depth, void *cl), 
+                      void *cl); 
 
 /*
  * bst_map_postorder
@@ -253,7 +253,7 @@ void bst_map_preorder(BSTree_T tree,
  * @return      n/a
  */
 void bst_map_postorder(BSTree_T tree, 
-                      void func_to_apply(void *value, int depth, void *cl), 
-                      void *cl); 
+                       void func_to_apply(void *value, int depth, void *cl), 
+                       void *cl); 
 
 #endif
