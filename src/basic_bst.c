@@ -29,9 +29,9 @@ Node *private_find_in_tree(BSTree_T tree, void *value,
 void bst_transplant(BSTree_T tree, Node *u, Node *v); 
 Node *private_bst_minimum(Node *x);
 Node *private_bst_maximum(Node *x); 
-void *private_successor_of_value(BSTree_T tree, void *value, 
+void *private_bst_successor_of_value(BSTree_T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2));
-void *private_predecessor_of_value(BSTree_T tree, void *value, 
+void *private_bst_predecessor_of_value(BSTree_T tree, void *value, 
                                    void *comparison_func(void *val1, void *val2));
 void private_bst_map_inorder(Node *root, 
                              int depth, 
@@ -51,7 +51,7 @@ void private_bst_map_postorder(Node *root,
  * function definitions *
  ************************/
 
-BSTree_T new_bst(void *comparison_func)
+BSTree_T bst_new(void *comparison_func)
 {
         BSTree_T tree = malloc(sizeof(struct bs_tree)); 
 
@@ -207,7 +207,7 @@ void bst_transplant(BSTree_T tree, Node *u, Node *v)
                 v->parent = u->parent; 
 }
 
-void *tree_minimum(BSTree_T tree)
+void *bst_tree_minimum(BSTree_T tree)
 {
         Node *n = private_bst_minimum(tree->root); 
 
@@ -217,7 +217,7 @@ void *tree_minimum(BSTree_T tree)
                 return n->value;
 }
 
-void *tree_maximum(BSTree_T tree)
+void *bst_tree_maximum(BSTree_T tree)
 {
         Node *n = private_bst_maximum(tree->root);  
 
@@ -245,17 +245,17 @@ Node *private_bst_maximum(Node *x)
         return x; 
 }
 
-void *successor_of_value(BSTree_T tree, void *value)
+void *bst_successor_of_value(BSTree_T tree, void *value)
 {
-        return private_successor_of_value(tree, value, tree->comparison_func); 
+        return private_bst_successor_of_value(tree, value, tree->comparison_func); 
 }
 
-void *predecessor_of_value(BSTree_T tree, void *value)
+void *bst_predecessor_of_value(BSTree_T tree, void *value)
 {
-        return private_predecessor_of_value(tree, value, tree->comparison_func); 
+        return private_bst_predecessor_of_value(tree, value, tree->comparison_func); 
 } 
 
-void *private_successor_of_value(BSTree_T tree, void *value, 
+void *private_bst_successor_of_value(BSTree_T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
@@ -279,7 +279,7 @@ void *private_successor_of_value(BSTree_T tree, void *value,
                 return successor->value; 
 }
 
-void *private_predecessor_of_value(BSTree_T tree, void *value, 
+void *private_bst_predecessor_of_value(BSTree_T tree, void *value, 
                                    void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
