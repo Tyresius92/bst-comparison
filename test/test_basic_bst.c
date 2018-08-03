@@ -192,7 +192,7 @@ void test_bst_map_inorder_string(void)
 {
         BSTree_T test_tree = new_bst(NULL);
 
-        int expected_depth[] = { 2, 1, 3, 2, 0, 1 };
+        int expected_depth[] = { 1, 0, 4, 3, 2, 1 };
         char *expected_words[] = {"earth", "hello", "hello", "says", "the", "world"};
 
         char *word_ray[] = {"hello", "world", "the", "earth", "says", "hello"};
@@ -218,8 +218,8 @@ void test_bst_map_preorder_string(void)
 {
         BSTree_T test_tree = new_bst(NULL);
 
-        int expected_depth[] = { 0, 1, 2, 2, 3, 1 };
-        char *expected_words[] = {"the", "hello", "earth", "says", "hello", "world"};
+        int expected_depth[] = { 0, 1, 1, 2, 3, 4 };
+        char *expected_words[] = {"hello", "earth", "world", "the", "says", "hello"};
 
         char *word_ray[] = {"hello", "world", "the", "earth", "says", "hello"};
 
@@ -244,8 +244,8 @@ void test_bst_map_postorder_string(void)
 {
         BSTree_T test_tree = new_bst(NULL);
 
-        int expected_depth[] = { 2, 3, 2, 1, 1, 0 };
-        char *expected_words[] = {"earth", "hello", "says", "hello", "world", "the"};
+        int expected_depth[] = { 1, 4, 3, 2, 1, 0 };
+        char *expected_words[] = {"earth", "hello", "says", "the", "world", "hello"};
 
         char *word_ray[] = {"hello", "world", "the", "earth", "says", "hello"};
 
@@ -428,9 +428,9 @@ int main(void)
         RUN_TEST(test_search); 
         RUN_TEST(test_insert_ints); 
         RUN_TEST(test_search_for_ints); 
-        //RUN_TEST(test_bst_map_inorder_string); 
-        //RUN_TEST(test_bst_map_preorder_string); 
-        //RUN_TEST(test_bst_map_postorder_string); 
+        RUN_TEST(test_bst_map_inorder_string); 
+        RUN_TEST(test_bst_map_preorder_string); 
+        RUN_TEST(test_bst_map_postorder_string); 
         RUN_TEST(test_delete_value); 
         RUN_TEST(test_delete_value_not_in_tree); 
         RUN_TEST(test_tree_minimum); 
