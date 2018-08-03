@@ -28,7 +28,7 @@ typedef struct rb_tree *RedBlack_T;
  **********************/
 
 /*
- * new_rb_tree
+ * rb_new
  * 
  * returns a pointer to a new, empty red black tree
  * 
@@ -49,7 +49,7 @@ typedef struct rb_tree *RedBlack_T;
  *        
  * @return      pointer to empty rb_tree
  */
-RedBlack_T new_rb_tree(void *comparison_func); 
+RedBlack_T rb_new(void *comparison_func); 
 
 /*
  * rb_tree_free
@@ -125,7 +125,7 @@ void *rb_search(RedBlack_T tree, void *value);
 void rb_delete_value(RedBlack_T tree, void *value); 
 
 /*
- * tree_minimum
+ * rb_tree_minimum
  * 
  * given a tree, returns the minimum value stored in the tree
  * 
@@ -135,10 +135,10 @@ void rb_delete_value(RedBlack_T tree, void *value);
  * @param       RedBlack_T - tree to be searched
  * @return      void * - pointer to min value
  */
-void *tree_minimum(RedBlack_T tree); 
+void *rb_tree_minimum(RedBlack_T tree); 
 
 /*
- * tree_maximum
+ * rb_tree_maximum
  * 
  * given a tree, returns the maximum value stored in the tree
  * 
@@ -148,10 +148,10 @@ void *tree_minimum(RedBlack_T tree);
  * @param       RedBlack_T - tree to be searched
  * @return      void * - pointer to max value
  */
-void *tree_maximum(RedBlack_T tree); 
+void *rb_tree_maximum(RedBlack_T tree); 
 
 /*
- * successor_of_value
+ * rb_successor_of_value
  * 
  * given a tree and a value, returns the first successor of that value
  * returned value will always be distinct from value, even if there are 
@@ -165,10 +165,10 @@ void *tree_maximum(RedBlack_T tree);
  * @param       void * - value to find the successor of
  * @return      void * - value of the successor
  */
-void *successor_of_value(RedBlack_T tree, void *value); 
+void *rb_successor_of_value(RedBlack_T tree, void *value); 
 
 /*
- * predecessor_of_value
+ * rb_predecessor_of_value
  * 
  * given a tree and a value, returns the first predecessor of that value
  * returned value will always be distinct from value, even if there are 
@@ -182,7 +182,7 @@ void *successor_of_value(RedBlack_T tree, void *value);
  * @param       void * - value to find the predecessor of
  * @return      void * - value of the predecessor
  */
-void *predecessor_of_value(RedBlack_T tree, void *value); 
+void *rb_predecessor_of_value(RedBlack_T tree, void *value); 
 
 /*
  * rb_map_inorder

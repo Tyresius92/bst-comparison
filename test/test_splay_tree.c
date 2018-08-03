@@ -9,33 +9,33 @@ void tearDown(void)
 {
 }
 
-void test_new_splay(void)
+void test_splay_new(void)
 {
-        Splay_T test_tree = new_splay(NULL);
+        Splay_T test_tree = splay_new(NULL);
         TEST_ASSERT_NOT_NULL(test_tree);
 
         splay_free(test_tree); 
 }
 
-void test_insert_string(void)
+void test_splay_insert_string(void)
 {
-        Splay_T test_tree = new_splay(NULL);
+        Splay_T test_tree = splay_new(NULL);
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "Hello")); 
 
         splay_free(test_tree); 
 }
 
-void test_is_empty_on_empty_tree(void)
+void test_splay_is_empty_on_empty_tree(void)
 {
-        Splay_T test_tree = new_splay(NULL);
+        Splay_T test_tree = splay_new(NULL);
         TEST_ASSERT_TRUE(splay_is_empty(test_tree));
 
         splay_free(test_tree); 
 }
 
-void test_is_empty_one_item_tree(void)
+void test_splay_is_empty_one_item_tree(void)
 {
-        Splay_T test_tree = new_splay(NULL);
+        Splay_T test_tree = splay_new(NULL);
         splay_insert_value(test_tree, "hello");
 
         TEST_ASSERT_FALSE(splay_is_empty(test_tree)); 
@@ -43,17 +43,17 @@ void test_is_empty_one_item_tree(void)
         splay_free(test_tree); 
 }
 
-void test_get_value_at_root_empty_tree(void)
+void test_splay_get_value_at_root_empty_tree(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         TEST_ASSERT_NULL(splay_get_value_at_root(test_tree)); 
 
         splay_free(test_tree); 
 }
 
-void test_insert_several_values(void)
+void test_splay_insert_several_values(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "hello")); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "world"));
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "the"));
@@ -64,9 +64,9 @@ void test_insert_several_values(void)
         splay_free(test_tree); 
 }
 
-void test_insert_many_times(void)
+void test_splay_insert_many_times(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "a")); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "b")); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "c")); 
@@ -83,9 +83,9 @@ void test_insert_many_times(void)
         splay_free(test_tree); 
 }
 
-void test_insert_reversed_order(void)
+void test_splay_insert_reversed_order(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "l")); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "k")); 
         TEST_ASSERT_EQUAL(0, splay_insert_value(test_tree, "j")); 
@@ -102,9 +102,9 @@ void test_insert_reversed_order(void)
         splay_free(test_tree); 
 }
 
-void test_search(void)
+void test_splay_search(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
 
         splay_insert_value(test_tree, "a"); 
         TEST_ASSERT_NOT_NULL(splay_search(test_tree, "a")); 
@@ -124,9 +124,9 @@ void test_search(void)
         splay_free(test_tree); 
 }
 
-void test_get_value_at_root_one_item_tree(void)
+void test_splay_get_value_at_root_one_item_tree(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         TEST_ASSERT_NULL(splay_get_value_at_root(test_tree)); 
 
         splay_insert_value(test_tree, "hello"); 
@@ -136,9 +136,9 @@ void test_get_value_at_root_one_item_tree(void)
         splay_free(test_tree); 
 }
 
-void test_get_value_at_root_after_insertions(void)
+void test_splay_get_value_at_root_after_insertions(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         TEST_ASSERT_NULL(splay_get_value_at_root(test_tree)); 
 
         splay_insert_value(test_tree, "hello"); 
@@ -183,9 +183,9 @@ void test_get_value_at_root_after_insertions(void)
         splay_free(test_tree); 
 }
 
-void test_get_value_at_root_after_search(void)
+void test_splay_get_value_at_root_after_search(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
 
         splay_insert_value(test_tree, "a"); 
         TEST_ASSERT_EQUAL_STRING("a", splay_search(test_tree, "a")); 
@@ -217,9 +217,9 @@ int integer_comparison(void *val_one, void *val_two)
         }
 }
 
-void test_insert_ints(void)
+void test_splay_insert_ints(void)
 {
-        Splay_T test_tree = new_splay(&integer_comparison);
+        Splay_T test_tree = splay_new(&integer_comparison);
 
         int *test_ptr = NULL; 
 
@@ -233,9 +233,9 @@ void test_insert_ints(void)
         splay_free(test_tree); 
 }
 
-void test_search_for_ints(void)
+void test_splay_search_for_ints(void)
 {
-        Splay_T test_tree = new_splay(&integer_comparison);
+        Splay_T test_tree = splay_new(&integer_comparison);
 
         int *test_ptr = NULL; 
 
@@ -261,9 +261,9 @@ void test_search_for_ints(void)
         splay_free(test_tree); 
 }
 
-void test_delete_value(void)
+void test_splay_delete_value(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         splay_insert_value(test_tree, "hello"); 
         splay_insert_value(test_tree, "world");
         splay_insert_value(test_tree, "the");
@@ -317,9 +317,9 @@ void test_delete_value(void)
         splay_free(test_tree); 
 }
 
-void test_delete_value_not_in_tree(void)
+void test_splay_delete_value_not_in_tree(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         splay_insert_value(test_tree, "hello"); 
         splay_insert_value(test_tree, "world");
         splay_insert_value(test_tree, "the");
@@ -345,66 +345,66 @@ void test_delete_value_not_in_tree(void)
         splay_free(test_tree); 
 }
 
-void test_tree_minimum(void)
+void test_splay_tree_minimum(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         splay_insert_value(test_tree, "hello"); 
         splay_insert_value(test_tree, "world");
         splay_insert_value(test_tree, "the");
         splay_insert_value(test_tree, "earth");
         splay_insert_value(test_tree, "says");
 
-        TEST_ASSERT_EQUAL_STRING("earth", tree_minimum(test_tree)); 
+        TEST_ASSERT_EQUAL_STRING("earth", splay_tree_minimum(test_tree)); 
 
         splay_free(test_tree); 
 }
 
-void test_tree_maximum(void)
+void test_splay_tree_maximum(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         splay_insert_value(test_tree, "hello"); 
         splay_insert_value(test_tree, "world");
         splay_insert_value(test_tree, "the");
         splay_insert_value(test_tree, "earth");
         splay_insert_value(test_tree, "says");
 
-        TEST_ASSERT_EQUAL_STRING("world", tree_maximum(test_tree)); 
+        TEST_ASSERT_EQUAL_STRING("world", splay_tree_maximum(test_tree)); 
 
         splay_free(test_tree); 
 }
 
-void test_successor_of_value(void)
+void test_splay_successor_of_value(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         splay_insert_value(test_tree, "hello"); 
         splay_insert_value(test_tree, "world");
         splay_insert_value(test_tree, "the");
         splay_insert_value(test_tree, "earth");
         splay_insert_value(test_tree, "says");
 
-        TEST_ASSERT_EQUAL_STRING("world", successor_of_value(test_tree, "the"));
-        TEST_ASSERT_EQUAL_STRING("hello", successor_of_value(test_tree, "earth"));
-        TEST_ASSERT_EQUAL_STRING("the", successor_of_value(test_tree, "says")); 
-        TEST_ASSERT_EQUAL_STRING("says", successor_of_value(test_tree, "not_in_tree"));
-        TEST_ASSERT_NULL(successor_of_value(test_tree, "world"));
+        TEST_ASSERT_EQUAL_STRING("world", splay_successor_of_value(test_tree, "the"));
+        TEST_ASSERT_EQUAL_STRING("hello", splay_successor_of_value(test_tree, "earth"));
+        TEST_ASSERT_EQUAL_STRING("the", splay_successor_of_value(test_tree, "says")); 
+        TEST_ASSERT_EQUAL_STRING("says", splay_successor_of_value(test_tree, "not_in_tree"));
+        TEST_ASSERT_NULL(splay_successor_of_value(test_tree, "world"));
 
         splay_free(test_tree); 
 }
 
-void test_predecessor_of_value(void)
+void test_splay_predecessor_of_value(void)
 {
-        Splay_T test_tree = new_splay(NULL); 
+        Splay_T test_tree = splay_new(NULL); 
         splay_insert_value(test_tree, "hello"); 
         splay_insert_value(test_tree, "world");
         splay_insert_value(test_tree, "the");
         splay_insert_value(test_tree, "earth");
         splay_insert_value(test_tree, "says");
 
-        TEST_ASSERT_EQUAL_STRING("says", predecessor_of_value(test_tree, "the"));
-        TEST_ASSERT_EQUAL_STRING("hello", predecessor_of_value(test_tree, "says"));
-        TEST_ASSERT_EQUAL_STRING("earth", predecessor_of_value(test_tree, "hello"));  
-        TEST_ASSERT_EQUAL_STRING("hello", predecessor_of_value(test_tree, "not_in_tree"));
-        TEST_ASSERT_NULL(predecessor_of_value(test_tree, "earth"));
+        TEST_ASSERT_EQUAL_STRING("says", splay_predecessor_of_value(test_tree, "the"));
+        TEST_ASSERT_EQUAL_STRING("hello", splay_predecessor_of_value(test_tree, "says"));
+        TEST_ASSERT_EQUAL_STRING("earth", splay_predecessor_of_value(test_tree, "hello"));  
+        TEST_ASSERT_EQUAL_STRING("hello", splay_predecessor_of_value(test_tree, "not_in_tree"));
+        TEST_ASSERT_NULL(splay_predecessor_of_value(test_tree, "earth"));
 
         splay_free(test_tree); 
 }
@@ -413,26 +413,26 @@ int main(void)
 {
         UnityBegin("test/test_splay_tree.c");
 
-        RUN_TEST(test_new_splay); 
-        RUN_TEST(test_insert_string); 
-        RUN_TEST(test_is_empty_on_empty_tree); 
-        RUN_TEST(test_is_empty_one_item_tree); 
-        RUN_TEST(test_get_value_at_root_empty_tree); 
-        RUN_TEST(test_insert_several_values); 
-        RUN_TEST(test_insert_many_times); 
-        RUN_TEST(test_insert_reversed_order); 
-        RUN_TEST(test_get_value_at_root_one_item_tree); 
-        RUN_TEST(test_get_value_at_root_after_insertions); 
-        RUN_TEST(test_get_value_at_root_after_search); 
-        RUN_TEST(test_search); 
-        RUN_TEST(test_insert_ints); 
-        RUN_TEST(test_search_for_ints); 
-        RUN_TEST(test_delete_value); 
-        RUN_TEST(test_delete_value_not_in_tree); 
-        RUN_TEST(test_tree_minimum); 
-        RUN_TEST(test_tree_maximum); 
-        RUN_TEST(test_successor_of_value); 
-        RUN_TEST(test_predecessor_of_value); 
+        RUN_TEST(test_splay_new); 
+        RUN_TEST(test_splay_insert_string); 
+        RUN_TEST(test_splay_is_empty_on_empty_tree); 
+        RUN_TEST(test_splay_is_empty_one_item_tree); 
+        RUN_TEST(test_splay_get_value_at_root_empty_tree); 
+        RUN_TEST(test_splay_insert_several_values); 
+        RUN_TEST(test_splay_insert_many_times); 
+        RUN_TEST(test_splay_insert_reversed_order); 
+        RUN_TEST(test_splay_get_value_at_root_one_item_tree); 
+        RUN_TEST(test_splay_get_value_at_root_after_insertions); 
+        RUN_TEST(test_splay_get_value_at_root_after_search); 
+        RUN_TEST(test_splay_search); 
+        RUN_TEST(test_splay_insert_ints); 
+        RUN_TEST(test_splay_search_for_ints); 
+        RUN_TEST(test_splay_delete_value); 
+        RUN_TEST(test_splay_delete_value_not_in_tree); 
+        RUN_TEST(test_splay_tree_minimum); 
+        RUN_TEST(test_splay_tree_maximum); 
+        RUN_TEST(test_splay_successor_of_value); 
+        RUN_TEST(test_splay_predecessor_of_value); 
 
         UnityEnd();
         return 0;

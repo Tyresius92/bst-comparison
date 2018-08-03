@@ -172,9 +172,9 @@ void rb_transplant(T tree, Node *u, Node *v);
 void rb_delete_fixup(T tree, Node *x);
 
 /*
- * private_successor_of_value
+ * private_rb_successor_of_value
  * 
- * private helper function for successor_of_value
+ * private helper function for rb_successor_of_value
  * 
  * CREs         n/a
  * UREs         n/a
@@ -185,11 +185,11 @@ void rb_delete_fixup(T tree, Node *x);
  * @return      void * - pointer to the successor's value (or NULL if no 
  *                      successor exists)
  */
-void *private_successor_of_value(T tree, void *value, 
+void *private_rb_successor_of_value(T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2));
 
 /*
- * private_predecessor_of_value
+ * private_rb_predecessor_of_value
  * 
  * private helper function for predcessor_of_value
  * 
@@ -202,7 +202,7 @@ void *private_successor_of_value(T tree, void *value,
  * @return      void * - pointer to the predecessor's value (or NULL if no 
  *                      predecessor exists)
  */
-void *private_predecessor_of_value(T tree, void *value, 
+void *private_rb_predecessor_of_value(T tree, void *value, 
                                    void *comparison_func(void *val1, void *val2)); 
 
 /*
@@ -234,7 +234,7 @@ Node *private_find_successor(Node *n);
 Node *private_find_predecessor(Node *n); 
 
 /*
- * private_subtree_minimum
+ * private_subrb_tree_minimum
  * 
  * given a node, returns the node containing the minimum value in the subtree 
  * rooted at that node
@@ -245,10 +245,10 @@ Node *private_find_predecessor(Node *n);
  * @param       Node * - root of the subtree in question
  * @return      Node * - node containing the minimum
  */ 
-Node *private_subtree_minimum(Node *curr_node);
+Node *private_subrb_tree_minimum(Node *curr_node);
 
 /*
- * private_subtree_minimum
+ * private_subrb_tree_minimum
  * 
  * given a node, returns the node containing the minimum value in the subtree 
  * rooted at that node
@@ -259,7 +259,7 @@ Node *private_subtree_minimum(Node *curr_node);
  * @param       Node * - root of the subtree in question
  * @return      Node * - node containing the minimum
  */ 
-Node *private_subtree_maximum(Node *curr_node);
+Node *private_subrb_tree_maximum(Node *curr_node);
 
 /*
  * rb_private_inorder_map
@@ -335,7 +335,7 @@ void rb_private_postorder_map(Node *root,
  * FUNCTION DEFINITIONS *
  ************************/ 
 
-T new_rb_tree(void *comparison_func)
+T rb_new(void *comparison_func)
 {
         T tree = malloc(sizeof(struct rb_tree)); 
 
@@ -702,29 +702,29 @@ void rb_delete_fixup(T tree, Node *culprit)
         culprit->color = BLACK; 
 }
 
-void *tree_maximum(T tree)
+void *rb_tree_maximum(T tree)
 {
-        Node *result = private_subtree_maximum(tree->root); 
+        Node *result = private_subrb_tree_maximum(tree->root); 
         return result->value; 
 }
 
-void *tree_minimum(T tree)
+void *rb_tree_minimum(T tree)
 {
-        Node *result = private_subtree_minimum(tree->root); 
+        Node *result = private_subrb_tree_minimum(tree->root); 
         return result->value; 
 }
 
-void *successor_of_value(T tree, void *value)
+void *rb_successor_of_value(T tree, void *value)
 {
-        return private_successor_of_value(tree, value, tree->comparison_func); 
+        return private_rb_successor_of_value(tree, value, tree->comparison_func); 
 }
 
-void *predecessor_of_value(T tree, void *value)
+void *rb_predecessor_of_value(T tree, void *value)
 {
-        return private_predecessor_of_value(tree, value, tree->comparison_func); 
+        return private_rb_predecessor_of_value(tree, value, tree->comparison_func); 
 } 
 
-void *private_successor_of_value(T tree, void *value, 
+void *private_rb_successor_of_value(T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
@@ -748,7 +748,7 @@ void *private_successor_of_value(T tree, void *value,
                 return successor->value; 
 }
 
-void *private_predecessor_of_value(T tree, void *value, 
+void *private_rb_predecessor_of_value(T tree, void *value, 
                                    void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
@@ -773,15 +773,15 @@ void *private_predecessor_of_value(T tree, void *value,
 
 Node *private_find_successor(Node *n)
 {
-        return private_subtree_minimum(n->right);  
+        return private_subrb_tree_minimum(n->right);  
 }
 
 Node *private_find_predecessor(Node *n)
 {
-        return private_subtree_maximum(n->left); 
+        return private_subrb_tree_maximum(n->left); 
 }
 
-Node *private_subtree_maximum(Node *curr_node)
+Node *private_subrb_tree_maximum(Node *curr_node)
 {
         while (curr_node->right != NULL)
                 curr_node = curr_node->right; 
@@ -789,7 +789,7 @@ Node *private_subtree_maximum(Node *curr_node)
         return curr_node;
 }
 
-Node *private_subtree_minimum(Node *curr_node)
+Node *private_subrb_tree_minimum(Node *curr_node)
 {
         while (curr_node->left != NULL)
                 curr_node = curr_node->left; 

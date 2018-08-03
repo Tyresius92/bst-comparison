@@ -13,7 +13,7 @@ typedef struct splay_tree *Splay_T;
  **********************/
 
 /*
- * new_splay_tree
+ * splay_new
  * 
  * returns a pointer to a new, empty red black tree
  * 
@@ -34,7 +34,7 @@ typedef struct splay_tree *Splay_T;
  *        
  * @return      pointer to empty splay_tree
  */
-Splay_T new_splay(void *comparison_func); 
+Splay_T splay_new(void *comparison_func); 
 
 /*
  * splay_tree_free
@@ -115,7 +115,7 @@ void *splay_search(Splay_T tree, void *value);
 void splay_delete_value(Splay_T tree, void *value); 
 
 /*
- * tree_minimum
+ * splay_tree_minimum
  * 
  * given a tree, returns the minimum value stored in the tree
  * 
@@ -125,10 +125,10 @@ void splay_delete_value(Splay_T tree, void *value);
  * @param       Splay_T - tree to be searched
  * @return      void * - pointer to min value
  */
-void *tree_minimum(Splay_T tree); 
+void *splay_tree_minimum(Splay_T tree); 
 
 /*
- * tree_maximum
+ * splay_tree_maximum
  * 
  * given a tree, returns the maximum value stored in the tree
  * 
@@ -138,10 +138,10 @@ void *tree_minimum(Splay_T tree);
  * @param       Splay_T - tree to be searched
  * @return      void * - pointer to max value
  */
-void *tree_maximum(Splay_T tree); 
+void *splay_tree_maximum(Splay_T tree); 
 
 /*
- * successor_of_value
+ * splay_successor_of_value
  * 
  * given a tree and a value, returns the first successor of that value
  * returned value will always be distinct from value, even if there are 
@@ -155,10 +155,10 @@ void *tree_maximum(Splay_T tree);
  * @param       void * - value to find the successor of
  * @return      void * - value of the successor
  */
-void *successor_of_value(Splay_T tree, void *value); 
+void *splay_successor_of_value(Splay_T tree, void *value); 
 
 /*
- * predecessor_of_value
+ * splay_predecessor_of_value
  * 
  * given a tree and a value, returns the first predecessor of that value
  * returned value will always be distinct from value, even if there are 
@@ -172,7 +172,7 @@ void *successor_of_value(Splay_T tree, void *value);
  * @param       void * - value to find the predecessor of
  * @return      void * - value of the predecessor
  */
-void *predecessor_of_value(Splay_T tree, void *value); 
+void *splay_predecessor_of_value(Splay_T tree, void *value); 
 
 /*
  * splay_map_inorder

@@ -29,9 +29,9 @@ Node *private_find_in_tree(Splay_T tree, void *value,
 void splay_transplant(Splay_T tree, Node *u, Node *v); 
 Node *private_splay_minimum(Node *x);
 Node *private_splay_maximum(Node *x); 
-Node *private_successor_of_value(Splay_T tree, void *value, 
+Node *private_splay_successor_of_value(Splay_T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2));
-Node *private_predecessor_of_value(Splay_T tree, void *value, 
+Node *private_splay_predecessor_of_value(Splay_T tree, void *value, 
                                    void *comparison_func(void *val1, void *val2));
 
 /* 
@@ -93,7 +93,7 @@ void splay_private_postorder_map(Node *root,
  * function definitions *
  ************************/
 
-Splay_T new_splay(void *comparison_func)
+Splay_T splay_new(void *comparison_func)
 {
         Splay_T tree = malloc(sizeof(struct splay_tree)); 
 
@@ -409,7 +409,7 @@ void splay_transplant(Splay_T tree, Node *u, Node *v)
                 v->parent = u->parent; 
 }
 
-void *tree_minimum(Splay_T tree)
+void *splay_tree_minimum(Splay_T tree)
 {
         Node *n = private_splay_minimum(tree->root); 
 
@@ -421,7 +421,7 @@ void *tree_minimum(Splay_T tree)
         }
 }
 
-void *tree_maximum(Splay_T tree)
+void *splay_tree_maximum(Splay_T tree)
 {
         Node *n = private_splay_maximum(tree->root);  
 
@@ -451,9 +451,9 @@ Node *private_splay_maximum(Node *x)
         return x; 
 }
 
-void *successor_of_value(Splay_T tree, void *value)
+void *splay_successor_of_value(Splay_T tree, void *value)
 {
-        Node *n = private_successor_of_value(tree, value, tree->comparison_func); 
+        Node *n = private_splay_successor_of_value(tree, value, tree->comparison_func); 
 
         if (n == NULL) {
                 return NULL; 
@@ -463,9 +463,9 @@ void *successor_of_value(Splay_T tree, void *value)
         }
 }
 
-void *predecessor_of_value(Splay_T tree, void *value)
+void *splay_predecessor_of_value(Splay_T tree, void *value)
 {
-        Node *n =  private_predecessor_of_value(tree, value, tree->comparison_func); 
+        Node *n =  private_splay_predecessor_of_value(tree, value, tree->comparison_func); 
         if (n == NULL) {
                 return NULL; 
         } else {
@@ -474,7 +474,7 @@ void *predecessor_of_value(Splay_T tree, void *value)
         }
 } 
 
-Node *private_successor_of_value(Splay_T tree, void *value, 
+Node *private_splay_successor_of_value(Splay_T tree, void *value, 
                                  void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
@@ -495,7 +495,7 @@ Node *private_successor_of_value(Splay_T tree, void *value,
         return successor; 
 }
 
-Node *private_predecessor_of_value(Splay_T tree, void *value, 
+Node *private_splay_predecessor_of_value(Splay_T tree, void *value, 
                                    void *comparison_func(void *val1, void *val2))
 {
         Node *curr_node = tree->root; 
