@@ -416,7 +416,7 @@ void test_predecessor_of_value(void)
 
 int main(void)
 {
-        UnityBegin("test/test_bst_node.c");
+        UnityBegin("test/test_rb_tree.c");
 
         RUN_TEST(test_new_rb_tree); 
         RUN_TEST(test_insert_string); 
