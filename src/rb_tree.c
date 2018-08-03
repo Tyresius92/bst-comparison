@@ -372,9 +372,9 @@ bool rb_tree_is_empty(T tree)
 
 void private_deallocate_all_tree_nodes(Node *n) {
         if (n->left != NULL) 
-                deallocate_all_tree_nodes(n->left);
+                private_deallocate_all_tree_nodes(n->left);
         if (n->right != NULL)
-                deallocate_all_tree_nodes(n->right); 
+                private_deallocate_all_tree_nodes(n->right); 
 
         free(n); 
 }
@@ -621,12 +621,14 @@ void rb_delete_value(T tree, void *value)
 
 void rb_transplant(T tree, Node *u, Node *v) 
 {
-        if (u->parent == NULL) 
+        if (u->parent == NULL) {
                 tree->root = v; 
-        else if (u == u->parent->left)
+                v->parent = NULL; 
+        } else if (u == u->parent->left) {
                 u->parent->left = v; 
-        else 
+        } else {
                 u->parent->right = v;
+        }
 
         if (v != NULL)
                 v->parent = u->parent; 
@@ -690,6 +692,7 @@ void rb_delete_fixup(T tree, Node *culprit)
                                 culprit = tree->root; 
                         }
                 }
+
         }
         culprit->color = BLACK; 
 }
