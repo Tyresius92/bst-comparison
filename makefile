@@ -4,7 +4,6 @@ CFLAGS  = -std=c99
 CFLAGS += -g
 CFLAGS += -Wall
 CFLAGS += -Wextra
-#CFLAGS += -pedantic
 CFLAGS += -Werror
 
 VFLAGS  = --quiet
@@ -24,18 +23,6 @@ all: test compare_bst.out
 compare_bst.out:  splay_tree.o rb_tree.o basic_bst.o compare_bsts.o
 	@echo Compiling $@ executable
 	@$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS)
-
-#compare_bsts.o: src/compare_bsts.c src/compare_bsts.h
-#	@$(CC) $(CFLAGS) $^ -o $@
-#
-#splay.o: src/splay_tree.c src/splay_tree.h 
-#	@$(CC) $(CFLAGS) -c src/splay_tree.c -o splay.o
-
-#rb_tree.o: src/rb_tree.c src/rb_tree.h 
-#	@$(CC) $(CFLAGS) -c src/rb_tree.c -o rb_tree.o
-
-#basic_bst.o: src/basic_bst.c src/basic_bst.h
-#	@$(CC) $(CFLAGS) -c src/basic_bst.c -o basic_bst.o
 
 clean:
 	rm -rf *.o *.out *.out.dSYM *~
