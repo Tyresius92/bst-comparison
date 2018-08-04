@@ -77,7 +77,7 @@ bool bst_is_empty(BSTree_T tree);
  * 
  * @param       BSTree_T - tree in which to insert value
  * @param       void * - a pointer to any item to be inserted
- * @return      n/a
+ * @return      number of touched nodes
  */
 int bst_insert_value(BSTree_T tree, void *value);
 

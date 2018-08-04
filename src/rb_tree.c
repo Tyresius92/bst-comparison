@@ -28,7 +28,7 @@ typedef RedBlack_T T;
  *********************************/ 
 
 /*
- * private_deallocate_all_tree_nodes
+ * private_rb_deallocate_all_tree_nodes
  * 
  * helper function for rb_tree_free. Recursively deletes all nodes in 
  * the subtree rooted at n (rb_tree_free passes in tree->root)
@@ -39,7 +39,7 @@ typedef RedBlack_T T;
  * @param       Node * - the root of a subtree to delete
  * @return      n/a
  */
-void private_deallocate_all_tree_nodes(Node *n); 
+void private_rb_deallocate_all_tree_nodes(Node *n); 
 
 /* 
  * rotate_left
@@ -54,10 +54,10 @@ void private_deallocate_all_tree_nodes(Node *n);
  * @param       Node * - pointer to the node to be rotated
  * @return      n/a
  */
-void rotate_left(T tree, Node *n); 
+void rb_rotate_left(T tree, Node *n); 
 
 /* 
- * rotate_right
+ * rb_rotate_right
  * 
  * given a tree and a node n, moves n's left child to be the child of n's 
  * parent, and makes n the child of its left child
@@ -69,10 +69,10 @@ void rotate_left(T tree, Node *n);
  * @param       Node * - pointer to the node to be rotated
  * @return      n/a
  */
-void rotate_right(T tree, Node *n); 
+void rb_rotate_right(T tree, Node *n); 
 
 /*
- * construct_node
+ * rb_construct_node
  * 
  * given a value, constructs a node containing that value, with all relational
  * pointers set to NULL, and color set to RED
@@ -83,7 +83,7 @@ void rotate_right(T tree, Node *n);
  * @param       void * - value to go into the node
  * @return      Node * - pointer to the new node
  */ 
-Node *construct_node(void *value);
+Node *rb_construct_node(void *value);
 
 
 /*
@@ -102,7 +102,7 @@ Node *construct_node(void *value);
  *                      root
  * @return      a pointer to the most recently touched node 
  */
-Node *private_insert_value(Node *root, Node *new_node, 
+Node *private_rb_insert_value(Node *root, Node *new_node, 
                            void *comparison_func(void *val1, void *val2));
 
 /*
@@ -135,7 +135,7 @@ void fix_insertion_violation(T tree, Node *inserted);
  * @param       void * - pointer to the comparison function for that tree
  * @return      Node * - pointer to the node containing value
  */
-Node *private_find_in_tree(T tree, void *value, 
+Node *private_rb_find_in_tree(T tree, void *value, 
                            void *comparison_func(void *val1, void *val2));
 
 /* 
@@ -206,7 +206,7 @@ void *private_rb_predecessor_of_value(T tree, void *value,
                                    void *comparison_func(void *val1, void *val2)); 
 
 /*
- * private_find_successor
+ * private_rb_find_successor
  * 
  * private general use helper function - given a pointer to node, returns the 
  * node containing the successor
@@ -217,10 +217,10 @@ void *private_rb_predecessor_of_value(T tree, void *value,
  * @param       Node * - node that we want the successor of
  * @return      Node * - node containing the successor
  */
-Node *private_find_successor(Node *n); 
+Node *private_rb_find_successor(Node *n); 
 
 /*
- * private_find_predecessor
+ * private_rb_find_predecessor
  * 
  * private general use helper function - given a pointer to node, returns the 
  * node containing the predecessor
@@ -231,7 +231,7 @@ Node *private_find_successor(Node *n);
  * @param       Node * - node that we want the predecessor of
  * @return      Node * - node containing the predecessor
  */
-Node *private_find_predecessor(Node *n); 
+Node *private_rb_find_predecessor(Node *n); 
 
 /*
  * private_subrb_tree_minimum
@@ -354,7 +354,7 @@ void rb_tree_free(T tree)
 {
         assert(tree != NULL);
 
-        private_deallocate_all_tree_nodes(tree->root); 
+        private_rb_deallocate_all_tree_nodes(tree->root); 
         free(tree); 
 
         tree = NULL; 
@@ -370,19 +370,19 @@ bool rb_tree_is_empty(T tree)
                 return false; 
 }
 
-void private_deallocate_all_tree_nodes(Node *n) {
+void private_rb_deallocate_all_tree_nodes(Node *n) {
         if (n == NULL)
                 return; 
 
         if (n->left != NULL) 
-                private_deallocate_all_tree_nodes(n->left);
+                private_rb_deallocate_all_tree_nodes(n->left);
         if (n->right != NULL)
-                private_deallocate_all_tree_nodes(n->right); 
+                private_rb_deallocate_all_tree_nodes(n->right); 
 
         free(n); 
 }
 
-void rotate_left(T tree, Node *n)
+void rb_rotate_left(T tree, Node *n)
 {
         Node *right_child = n->right; 
 
@@ -407,7 +407,7 @@ void rotate_left(T tree, Node *n)
         n->parent = right_child; 
 }
 
-void rotate_right(T tree, Node *n)
+void rb_rotate_right(T tree, Node *n)
 { 
         Node *left_child = n->left; 
 
@@ -436,15 +436,15 @@ int rb_insert_value(T tree, void *value)
 {
         assert(tree != NULL && value != NULL); 
 
-        Node *new_node = construct_node(value); 
-        tree->root = private_insert_value(tree->root, new_node, tree->comparison_func); 
+        Node *new_node = rb_construct_node(value); 
+        tree->root = private_rb_insert_value(tree->root, new_node, tree->comparison_func); 
 
         fix_insertion_violation(tree, new_node);  
 
         return 0;
 }
 
-Node *construct_node(void *value)
+Node *rb_construct_node(void *value)
 {
         Node *new_node = (Node *) malloc(sizeof(Node)); 
 
@@ -458,7 +458,7 @@ Node *construct_node(void *value)
         return new_node; 
 }
 
-Node *private_insert_value(Node *root, Node *new_node, 
+Node *private_rb_insert_value(Node *root, Node *new_node, 
                            void *comparison_func(void *val1, void *val2)) 
 {
         if (root == NULL) { 
@@ -466,10 +466,10 @@ Node *private_insert_value(Node *root, Node *new_node,
         }
 
         if ((int)(intptr_t) comparison_func(new_node->value, root->value) < 0) {
-                root->left = private_insert_value(root->left, new_node, comparison_func); 
+                root->left = private_rb_insert_value(root->left, new_node, comparison_func); 
                 root->left->parent = root; 
         } else {
-                root->right = private_insert_value(root->right, new_node, comparison_func); 
+                root->right = private_rb_insert_value(root->right, new_node, comparison_func); 
                 root->right->parent = root; 
         }
 
@@ -500,12 +500,12 @@ void fix_insertion_violation(T tree, Node *culprit)
                         } else {
 
                                 if (culprit == parent_node->right) {
-                                        rotate_left(tree, parent_node); 
+                                        rb_rotate_left(tree, parent_node); 
                                         culprit = parent_node; 
                                         parent_node = culprit->parent; 
                                 }
 
-                                rotate_right(tree, grand_parent_node); 
+                                rb_rotate_right(tree, grand_parent_node); 
 
                                 char temp = parent_node->color; 
                                 parent_node->color = grand_parent_node->color; 
@@ -524,12 +524,12 @@ void fix_insertion_violation(T tree, Node *culprit)
                                 culprit = grand_parent_node; 
                         } else {
                                 if (culprit == parent_node->left) {
-                                        rotate_right(tree, parent_node); 
+                                        rb_rotate_right(tree, parent_node); 
                                         culprit = parent_node; 
                                         parent_node = culprit->parent; 
                                 }
 
-                                rotate_left(tree, grand_parent_node);
+                                rb_rotate_left(tree, grand_parent_node);
 
                                 char temp = parent_node->color; 
                                 parent_node->color = grand_parent_node->color; 
@@ -545,7 +545,7 @@ void fix_insertion_violation(T tree, Node *culprit)
 
 void *rb_search(T tree, void *value)
 {
-        Node *result = private_find_in_tree(tree, value, tree->comparison_func); 
+        Node *result = private_rb_find_in_tree(tree, value, tree->comparison_func); 
 
         if (result != NULL) 
                 return (void *) result->value; 
@@ -553,7 +553,7 @@ void *rb_search(T tree, void *value)
         return result; //AKA return NULL 
 }
 
-Node *private_find_in_tree(T tree, void *value, 
+Node *private_rb_find_in_tree(T tree, void *value, 
                            void *comparison_func(void *val1, void *val2))
 {
         bool found = false; 
@@ -581,7 +581,7 @@ void rb_delete_value(T tree, void *value)
 
         Node *subtree_of_deleted = NULL; 
 
-        Node *delete_me = private_find_in_tree(tree, value, tree->comparison_func); 
+        Node *delete_me = private_rb_find_in_tree(tree, value, tree->comparison_func); 
 
         if (delete_me == NULL) 
                 return;
@@ -596,7 +596,7 @@ void rb_delete_value(T tree, void *value)
                 subtree_of_deleted = delete_me->left; 
                 rb_transplant(tree, delete_me, delete_me->left);
         } else {
-                y = private_find_successor(delete_me); 
+                y = private_rb_find_successor(delete_me); 
                 y_original_color = y->color; 
 
                 subtree_of_deleted = y->right; 
@@ -650,7 +650,7 @@ void rb_delete_fixup(T tree, Node *culprit)
                         if (sibling->color == RED) {
                                 sibling->color = BLACK; 
                                 culprit->parent->color = RED; 
-                                rotate_left(tree, culprit->parent); 
+                                rb_rotate_left(tree, culprit->parent); 
                                 sibling = culprit->parent->right; 
                         }
 
@@ -661,13 +661,13 @@ void rb_delete_fixup(T tree, Node *culprit)
                                 if (sibling->right->color == BLACK) {
                                         sibling->left->color = BLACK; 
                                         sibling->color = RED; 
-                                        rotate_right(tree, sibling); 
+                                        rb_rotate_right(tree, sibling); 
                                         sibling = culprit->parent->right; 
                                 }
                                 sibling->color = culprit->parent->color; 
                                 culprit->parent->color = BLACK; 
                                 sibling->right->color = BLACK; 
-                                rotate_left(tree, culprit->parent); 
+                                rb_rotate_left(tree, culprit->parent); 
                                 culprit = tree->root; 
                         }
                 } else { //culprit == culprit->parent->right
@@ -676,7 +676,7 @@ void rb_delete_fixup(T tree, Node *culprit)
                         if (sibling->color == RED) {
                                 sibling->color = BLACK; 
                                 culprit->parent->color = RED; 
-                                rotate_left(tree, culprit->parent); 
+                                rb_rotate_left(tree, culprit->parent); 
                                 sibling = culprit->parent->left; 
                         }
 
@@ -687,13 +687,13 @@ void rb_delete_fixup(T tree, Node *culprit)
                                 if (sibling->left->color == BLACK) {
                                         sibling->right->color = BLACK; 
                                         sibling->color = RED; 
-                                        rotate_left(tree, sibling); 
+                                        rb_rotate_left(tree, sibling); 
                                         sibling = culprit->parent->left; 
                                 }
                                 sibling->color = culprit->parent->color; 
                                 culprit->parent->color = BLACK; 
                                 sibling->left->color = BLACK; 
-                                rotate_right(tree, culprit->parent); 
+                                rb_rotate_right(tree, culprit->parent); 
                                 culprit = tree->root; 
                         }
                 }
@@ -771,12 +771,12 @@ void *private_rb_predecessor_of_value(T tree, void *value,
                 return successor->value; 
 }
 
-Node *private_find_successor(Node *n)
+Node *private_rb_find_successor(Node *n)
 {
         return private_subrb_tree_minimum(n->right);  
 }
 
-Node *private_find_predecessor(Node *n)
+Node *private_rb_find_predecessor(Node *n)
 {
         return private_subrb_tree_maximum(n->left); 
 }

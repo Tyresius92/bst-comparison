@@ -164,14 +164,21 @@ void test_bst_insert_ints(void)
 {
         BSTree_T test_tree = bst_new(&integer_comparison);
 
-        int *test_ptr = NULL; 
-
         int a[] = { 1, 2, 3, 4, 5, 6, 6, 7, 9, 11};
 
-        for (int i = 0; i < 10; i++) {
-                test_ptr = &a[i]; 
-                TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, test_ptr)); 
-        }
+        
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[0])); 
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[1]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[2]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[3]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[4]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[5]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[6]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[7]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[8]));
+        TEST_ASSERT_EQUAL(0, bst_insert_value(test_tree, &a[9]));
+
+
 
         bst_free(test_tree); 
 }

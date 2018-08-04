@@ -1,3 +1,5 @@
+CC = gcc
+
 CFLAGS  = -std=c99
 CFLAGS += -g
 CFLAGS += -Wall
@@ -10,9 +12,35 @@ VFLAGS += --tool=memcheck
 VFLAGS += --leak-check=full
 VFLAGS += --error-exitcode=1
 
-compare_bst: src/compare_bsts.c src/compare_bsts.h splay.o rb_tree.o basic_bst.o
+INCLUDES = $(shell echo src/*.h)
+
+LDLIBS = -lrt
+
+%.o: src/%.c $(INCLUDES)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+all: test compare_bst.out
+
+compare_bst.out:  splay_tree.o rb_tree.o basic_bst.o compare_bsts.o
 	@echo Compiling $@ executable
-	@$(CC) $(CFLAGS) src/rb_tree.c splay_tree.o basic_bst.o compare_bsts.o -o compare_bst
+	@$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS)
+
+#compare_bsts.o: src/compare_bsts.c src/compare_bsts.h
+#	@$(CC) $(CFLAGS) $^ -o $@
+#
+#splay.o: src/splay_tree.c src/splay_tree.h 
+#	@$(CC) $(CFLAGS) -c src/splay_tree.c -o splay.o
+
+#rb_tree.o: src/rb_tree.c src/rb_tree.h 
+#	@$(CC) $(CFLAGS) -c src/rb_tree.c -o rb_tree.o
+
+#basic_bst.o: src/basic_bst.c src/basic_bst.h
+#	@$(CC) $(CFLAGS) -c src/basic_bst.c -o basic_bst.o
+
+clean:
+	rm -rf *.o *.out *.out.dSYM *~
+
+############################################################################
 
 test: splay_tests.out bst_tests.out rb_tests.out
 	@./bst_tests.out
@@ -24,18 +52,6 @@ memcheck: bst_tests.out rb_tests.out splay_tests.out
 	@valgrind $(VFLAGS) ./rb_tests.out
 	@valgrind $(VFLAGS) ./splay_tests.out
 	@echo "Memory check passed"
-
-splay.o: src/splay_tree.c src/splay_tree.h 
-	@$(CC) $(CFLAGS) src/splay_tree.c -c splay.o
-
-rb_tree.o: src/rb_tree.c src/rb_tree.h 
-	@$(CC) $(CFLAGS) src/rb_tree.c -c rb_tree.o
-
-basic_bst.o: src/basic_bst.c src/basic_bst.h
-	@$(CC) $(CFLAGS) src/basic_bst.c -c basic_bst.o
-
-clean:
-	rm -rf *.o *.out *.out.dSYM *~
 
 rb_tests.out: test/test_rb_tree.c src/rb_tree.c src/rb_tree.h
 	@echo Compiling $@
